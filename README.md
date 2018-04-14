@@ -7,6 +7,10 @@ A small tool to simulate the movement of a autonomous shuttle called 'Olli'. Thi
 mobile application. The underlying vehicle data can be found [here][2]. To build a rail like infrastructure
 [OpenStreetMap][3] data is used and queried through the [OverpassApi][4].
 
+## Communications
+
+* Via [Slack][5]
+
 ## License
 
     Copyright 2018 Where's my Olli Team
@@ -28,3 +32,4 @@ mobile application. The underlying vehicle data can be found [here][2]. To build
 [2]: https://hackathon.innoz.de/data
 [3]: https://www.openstreetmap.org
 [4]: https://wiki.openstreetmap.org/wiki/Overpass_API
+[5]: https://open-olli-hack.slack.com/messages
