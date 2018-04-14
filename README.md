@@ -9,6 +9,12 @@ A small tool to simulate the movement of a autonomous shuttle called 'Olli'. Thi
 mobile application. The underlying vehicle data can be found [here][2]. To build a rail like infrastructure
 [OpenStreetMap][3] data is used and queried through the [OverpassApi][4].
 
+## Installation
+
+1) You'll need python 3.5
+2) Clone this repository
+3) Add a folder called `resources` and in this folder the file called `vehicle_states.csv` you can download [here][2].
+
 ## Communications
 
 * Via [Slack][5]
