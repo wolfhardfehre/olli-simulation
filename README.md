@@ -1,5 +1,7 @@
 # Open Olli Simulation
 
+[![Build Status](https://travis-ci.org/wolfhardfehre/olli-simulation.svg?branch=master)](https://travis-ci.org/wolfhardfehre/olli-simulation)
+
 ## Introduction
 
 A small tool to simulate the movement of a autonomous shuttle called 'Olli'. This repository is part of the
