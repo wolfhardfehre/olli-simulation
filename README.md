@@ -1,6 +1,6 @@
 # Open Olli Simulation
 
-[![Build Status](https://travis-ci.org/wolfhardfehre/olli-simulation.svg?branch=master)](https://travis-ci.org/wolfhardfehre/olli-simulation) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build Status](https://travis-ci.org/wolfhardfehre/olli-simulation.svg?branch=master)](https://travis-ci.org/wolfhardfehre/olli-simulation) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Maintainability](https://api.codeclimate.com/v1/badges/9c340690fb19fda2b2df/maintainability)](https://codeclimate.com/github/wolfhardfehre/olli-simulation/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/9c340690fb19fda2b2df/test_coverage)](https://codeclimate.com/github/wolfhardfehre/olli-simulation/test_coverage)
 
 ## Introduction
 
