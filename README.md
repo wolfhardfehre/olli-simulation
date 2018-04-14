@@ -1,6 +1,6 @@
 # Open Olli Simulation
 
-[![Build Status](https://travis-ci.org/wolfhardfehre/olli-simulation.svg?branch=master)](https://travis-ci.org/wolfhardfehre/olli-simulation)
+[![Build Status](https://travis-ci.org/wolfhardfehre/olli-simulation.svg?branch=master)](https://travis-ci.org/wolfhardfehre/olli-simulation) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Introduction
 
