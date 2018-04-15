@@ -1,2 +1,4 @@
 .idea/
 resources/vehicle_states.csv
+app/app/secret.py
+venv

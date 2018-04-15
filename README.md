@@ -15,6 +15,21 @@ mobile application. The underlying vehicle data can be found [here][2]. To build
 2) Clone this repository
 3) Add a folder called `resources` and in this folder the file called `vehicle_states.csv` you can download [here][2].
 
+### Virtual Environment (Ubuntu)
+
+1) `sudo apt install python3-venv`
+2) `python3 -m venv venv`                               (create virtual env)
+3) `source venv/bin/activate`                           (activate virtual env)
+4) `pip install --upgrade pip`                          (pip upgrade)
+5) `pip install -r requirements.txt`                    (install libs)
+[automation]
+6) `deactivate`                                         (to leave the virtual env)
+7) `pip install autoenv==1.0.0`                         (install autoenv locally)
+8) ``echo "source `which activate.sh`" >> ~/.bashrc``   (link autoenv to automatically start `venv` when `cd`ing into it) 
+9) `source ~/.bashrc`                                   (update system to new `bashrc` settings)
+10) you probably have to configure PyCharm settings (interpreter) if you use this IDE
+
+
 ## Communications
 
 * Via [Slack][5]
