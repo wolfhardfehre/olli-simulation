@@ -11,9 +11,9 @@ EOF
 psql open_olli -c "copy vehicle_states from STDIN WITH CSV HEADER DELIMITER ';'" < resources/vehicle_states.csv;
 
 psql open_olli <<EOF
+CREATE EXTENSION postgis;
 ALTER TABLE vehicle_states ADD COLUMN geometry Geography;
 ALTER TABLE vehicle_states ADD COLUMN seen_on Date;
-CREATE EXTENSION postgis;
 UPDATE vehicle_states SET geometry = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326);
 UPDATE vehicle_states SET seen_on = last_seen::Date;
 CREATE INDEX ON vehicle_states (last_seen);
