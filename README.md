@@ -14,6 +14,7 @@ mobile application. The underlying vehicle data can be found [here][2]. To build
 1) You'll need python 3.5
 2) Clone this repository
 3) Add a folder called `resources` and in this folder the file called `vehicle_states.csv` you can download [here][2].
+4) Add a file call `secret.py` into `app/app` folder and paste this line `TOKEN=<Your Mapbox Token>` with your Mapbox Token.
 
 ### Virtual Environment (Ubuntu)
 
