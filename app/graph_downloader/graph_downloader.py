@@ -55,6 +55,10 @@ class Downloader:
     def __distance(row):
         return meters(row['lat'], row['lon'], row['lat_to'], row['lon_to'])
 
+    def save(self):
+        self.nodes.to_pickle("../../resources/nodes.p")
+        self.edges.to_pickle("../../resources/edges.p")
+
 
 if __name__ == '__main__':
     NORTH = 52.484421
@@ -65,6 +69,7 @@ if __name__ == '__main__':
     json = fetch_geometries([SOUTH, WEST, NORTH, EAST])
 
     downloader = Downloader(json)
+    downloader.save()
     print("*** NODES ***")
     print(downloader.nodes)
     print("*** EDGES ***")
