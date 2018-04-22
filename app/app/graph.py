@@ -8,19 +8,28 @@ class Graph:
 
     def __init__(self, nodes, edges):
         self.nodes = self.__create_nodes(nodes)
-        self.edges = self.__create_edges(edges)
-        self.adjacent = self.__create_adjacent(self.edges)
+        self.adjacent = self.__create_adjacent(edges)
+
+    def get_adjacent_to(self, start_id):
+        end_id = self.__seed_end_node(start_id)
+        end = self.node_by_id(end_id)
+        start = self.node_by_id(start_id)
+        return start.geometry, end.geometry, end_id
 
     def seed(self):
         start = self.__seed_start_node()
-        end_id = self.__seed_end_node(start)
-        return start.iloc[0].geometry, self.nodes.loc[end_id].geometry
+        end_id = self.__seed_end_node(start.index.values[0])
+        end = self.node_by_id(end_id)
+        return start.iloc[0].geometry, end.geometry, end_id
+
+    def node_by_id(self, id):
+        return self.nodes.loc[id]
 
     def __seed_start_node(self):
         return self.nodes.sample(n=1)
 
     def __seed_end_node(self, node):
-        return random.choice(self.adjacent[node.index.values[0]])
+        return random.choice(self.adjacent[node])
 
     @staticmethod
     def __create_nodes(nodes):
@@ -32,13 +41,10 @@ class Graph:
         return nodes
 
     @staticmethod
-    def __create_edges(edges):
+    def __create_adjacent(edges):
         copy = edges.copy(deep=True)
         copy.columns = ['node2', 'node1', 'distance']
-        return pd.concat([edges, copy]).reset_index()[['node1', 'node2', 'distance']]
-
-    @staticmethod
-    def __create_adjacent(edges):
+        edges = pd.concat([edges, copy]).reset_index()[['node1', 'node2', 'distance']]
         adjacent = edges.node1.groupby(edges.node2).apply(list)
         return {i: row for i, row in adjacent.iteritems()}
 

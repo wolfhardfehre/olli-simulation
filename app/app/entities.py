@@ -26,22 +26,30 @@ class Shuttle(Entity):
 
     def __init__(self, graph, time, velocity_model):
         super().__init__(graph, time)
-        start, end = graph.seed()
-        self.a = math.atan2(end.y - start.y, end.x - start.x)
-        self.position = start
-        self.edge = LineString([start, end])
+        self.position, self.edge, self.a, self.end_id = self.__set_edge(graph.seed())
         self.velocity_model = velocity_model
 
     def current_position(self):
         return self.position
 
     def move(self, current_time):
-        delta_time = current_time - self.time
-        degs_per_sec = self.velocity_model.current_velocity()
-        x = self.position.x + delta_time * degs_per_sec * math.cos(self.position.y) * math.cos(self.a)
-        y = self.position.y + delta_time * degs_per_sec * math.sin(self.a)
+        delta_degrees = self.velocity_model.current_velocity() * (current_time - self.time)
+        x = self.position.x + delta_degrees * math.cos(self.position.y) * math.cos(self.a)
+        y = self.position.y + delta_degrees * math.sin(self.a)
         self.position = Point((x, y))
-        print(self.position.within(self.edge))
+        if not self.position.within(self.edge):
+            self.__pick_next()
+
+    def __pick_next(self):
+        edge = self.graph.get_adjacent_to(self.end_id)
+        self.position, self.edge, self.a, self.end_id = self.__set_edge(edge)
+
+    @staticmethod
+    def __set_edge(edge):
+        start, end, end_id = edge
+        azimuth = math.atan2(end.y - start.y, end.x - start.x)
+        edge = LineString([start, end])
+        return start, edge, azimuth, end_id
 
 
 class VelocityModel:
@@ -58,12 +66,9 @@ if __name__ == '__main__':
     node_data = [['1', 52.3, 13.4], ['2', 52.4, 13.4], ['3', 52.4, 13.3], ['4', 52.3, 13.3]]
     edge_data = [['1', '2', 30], ['2', '3', 20], ['3', '4', 45], ['4', '1', 25]]
     nodes = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
-    nodes.set_index('id')
     edges = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
-    sample_graph = Graph(nodes, edges)
-    velocity = VelocityModel()
-    shuttle = Shuttle(sample_graph, 0, velocity)
+    shuttle = Shuttle(Graph(nodes, edges), 0, VelocityModel())
     print(shuttle.current_position())
-    for t in range(0, 1000000, 10000):
+    for t in range(0, 100):
         shuttle.move(20)
         print(shuttle.current_position())
