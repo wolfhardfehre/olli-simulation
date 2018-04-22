@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Map</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css"/>
+    <link rel="stylesheet" href="../static/style.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="http://www.liedman.net/leaflet-realtime/dist/leaflet-realtime.js"></script>
+  </head>
+  <body>
+  	<div id="map"></div>
+    <script type=text/javascript> var token = '{{ token|safe }}'; </script>
+    <script type="text/javascript" src="../static/base_maps.js"></script>
+    <script type="text/javascript" src="../static/coordinate_window.js"></script>
+    <script type="text/javascript" src="../static/info_window.js"></script>
+  	<script type="text/javascript" src="../static/animated_elements.js"></script>
+  </body>
+</html>
