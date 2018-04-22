@@ -13,11 +13,11 @@ var geojsonMarkerOptions = {
 };
 
 var realtime = L.realtime({
-    url: 'https://wanderdrone.appspot.com/',
+    url: 'http://127.0.0.1:5000/animation_feed',
     crossOrigin: true,
     type: 'json'
 }, {
-    interval: 1000,
+    interval: 100,
     pointToLayer: function (feature, latlng) {
         return L.marker(latlng, {
             'icon': L.icon({
@@ -30,5 +30,5 @@ var realtime = L.realtime({
 }).addTo(map);
 
 realtime.on('update', function(e) {
-    map.fitBounds(realtime.getBounds(), {maxZoom: 4});
+    map.fitBounds(realtime.getBounds(), {maxZoom: 20});
 });
