@@ -1,13 +1,11 @@
 import math
 import abc
 import random
-
 import pandas as pd
-
-
+from shapely.geometry import Point, LineString
+from graph import Graph
 # TODO velocity model (curve, surface, mean/std)
 # TODO battery model (battery consumption)
-from graph import Graph
 
 LATITUDE_APPROX = 111320.0
 
@@ -28,24 +26,22 @@ class Shuttle(Entity):
 
     def __init__(self, graph, time, velocity_model):
         super().__init__(graph, time)
-        node, edge = graph.seed()
-        start = graph.nodes.loc[edge.iloc[0]['node1']]
-        end = graph.nodes.loc[edge.iloc[0]['node2']]
-        self.a = math.atan2(end['lat'] - start['lat'], end['lon'] - start['lon'])
-        self.x = node['lon'].values[0]
-        self.y = node['lat'].values[0]
+        start, end = graph.seed()
+        self.a = math.atan2(end.y - start.y, end.x - start.x)
+        self.position = start
+        self.edge = LineString([start, end])
         self.velocity_model = velocity_model
 
     def current_position(self):
-        return self.x, self.y
+        return self.position
 
     def move(self, current_time):
         delta_time = current_time - self.time
-        degrees_per_second = self.velocity_model.current_velocity()
-        vx = degrees_per_second * math.cos(self.y)
-        vy = degrees_per_second
-        self.x = self.x + delta_time * vx * math.cos(self.a)
-        self.y = self.y + delta_time * vy * math.sin(self.a)
+        degs_per_sec = self.velocity_model.current_velocity()
+        x = self.position.x + delta_time * degs_per_sec * math.cos(self.position.y) * math.cos(self.a)
+        y = self.position.y + delta_time * degs_per_sec * math.sin(self.a)
+        self.position = Point((x, y))
+        print(self.position.within(self.edge))
 
 
 class VelocityModel:
@@ -67,7 +63,7 @@ if __name__ == '__main__':
     sample_graph = Graph(nodes, edges)
     velocity = VelocityModel()
     shuttle = Shuttle(sample_graph, 0, velocity)
-    print(*shuttle.current_position())
-    for t in range(0, 20000, 1000):
+    print(shuttle.current_position())
+    for t in range(0, 1000000, 10000):
         shuttle.move(20)
-        print(*shuttle.current_position())
+        print(shuttle.current_position())
