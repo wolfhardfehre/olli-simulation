@@ -19,10 +19,10 @@ class Node:
 
 class Graph:
     def __init__(self, nodes, edges):
-        nodes = self.__prepare_nodes(nodes)
+        self.nodes = self.__prepare_nodes(nodes)
         edges = self.__prepare_edges(edges)
-        joined = self.__join(edges, nodes)
-        self.nodes = self.__adjacent(joined)
+        joined = self.__join(edges, self.nodes)
+        self.graph = self.__adjacent(joined)
 
     @staticmethod
     def __prepare_nodes(nodes):
@@ -56,7 +56,7 @@ class Graph:
 
 def shortest_path(graph, start, end):
     """ Shortest Path by David Eppstein, UC Irvine, 8 Mar 2002 """
-    distances, predecessors = dijkstra(graph.nodes, start, end)
+    distances, predecessors = dijkstra(graph.graph, start, end)
     path = []
     while 1:
         path.append(end)
