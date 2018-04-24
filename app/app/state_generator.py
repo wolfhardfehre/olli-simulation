@@ -1,8 +1,8 @@
-import models
-from app import db
-from sqlalchemy import and_
-from sqlalchemy.sql import select
+
+from graph import Graph
 import pandas as pd
+
+from entities import Shuttle, VelocityModel
 
 
 class StateGenerator:
@@ -15,20 +15,11 @@ class StateGenerator:
         return cls.instance
 
     def __init__(self, start_time='2018-02-14 15:40:00', end_time='2018-02-14 16:05:00'):
-        dataframe = self.__get_dataframe(start_time, end_time)
-        self.animation_data = dataframe.iterrows()
+        self.time = 0
+        self.shuttle = Shuttle(Graph.load_default(), 0, VelocityModel())
 
     def next_coordinate(self):
-        row = next(self.animation_data)[1]
-        return row['longitude'], row['latitude']
-
-    @staticmethod
-    def __get_dataframe(start_time, end_time):
-        query = select([models.VehicleStates]) \
-            .where(
-                and_(
-                    models.VehicleStates.last_seen > start_time,
-                    models.VehicleStates.last_seen < end_time
-                )
-            )
-        return pd.read_sql_query(sql=query, con=db.engine, parse_dates=['last_seen', 'created_at'])
+        self.time += 1
+        self.shuttle.move(self.time)
+        position = self.shuttle.current_position()
+        return (position.y, position.x)

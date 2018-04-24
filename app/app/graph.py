@@ -3,12 +3,17 @@ import random
 from geopandas import GeoDataFrame
 from shapely.geometry import Point
 
-
 class Graph:
 
     def __init__(self, nodes, edges):
         self.nodes = self.__create_nodes(nodes)
         self.adjacent = self.__create_adjacent(edges)
+
+    @classmethod
+    def load_default(cls):
+        nodes = pd.read_pickle("./resources/nodes.p")
+        edges = pd.read_pickle("./resources/edges.p")
+        return Graph(nodes, edges)
 
     def get_adjacent_to(self, start_id):
         end_id = self.__seed_end_node(start_id)
@@ -37,7 +42,6 @@ class Graph:
         nodes = GeoDataFrame(nodes.drop(['lat', 'lon'], axis=1),
                              crs={'init': 'epsg:4326'},
                              geometry=geometry)
-        nodes.set_index('id', inplace=True)
         return nodes
 
     @staticmethod
@@ -50,7 +54,5 @@ class Graph:
 
 
 if __name__ == '__main__':
-    loaded_nodes = pd.read_pickle("../../resources/nodes.p")
-    loaded_edges = pd.read_pickle("../../resources/edges.p")
-    graph = Graph(loaded_nodes, loaded_edges)
+    graph = Graph.load_default()
     print(graph.adjacent)

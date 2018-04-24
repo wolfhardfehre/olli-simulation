@@ -4,7 +4,7 @@ from app.tools.geo_tools import meters
 
 
 DEFAULT_URL = 'https://www.overpass-api.de/api/interpreter'
-QUERY_TEMPLATE = '[out:json];way[highway][highway=service]({:f},{:f},{:f},{:f});out geom;'
+QUERY_TEMPLATE = '[out:json];way[highway]({:f},{:f},{:f},{:f});out geom;'
 
 
 def fetch_geometries(bounding_box, url=DEFAULT_URL):
@@ -56,8 +56,8 @@ class Downloader:
         return meters(row['lat'], row['lon'], row['lat_to'], row['lon_to'])
 
     def save(self):
-        self.nodes.to_pickle("../../resources/nodes.p")
-        self.edges.to_pickle("../../resources/edges.p")
+        self.nodes.to_pickle("./resources/nodes.p")
+        self.edges.to_pickle("./resources/edges.p")
 
 
 if __name__ == '__main__':
