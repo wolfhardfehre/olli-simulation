@@ -22,4 +22,4 @@ class StateGenerator:
         self.time += 1
         self.shuttle.move(self.time)
         position = self.shuttle.current_position()
-        return (position.y, position.x)
+        return position.y, position.x

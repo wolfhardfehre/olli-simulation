@@ -56,8 +56,8 @@ class Downloader:
         return meters(row['lat'], row['lon'], row['lat_to'], row['lon_to'])
 
     def save(self):
-        self.nodes.to_pickle("./resources/nodes.p")
-        self.edges.to_pickle("./resources/edges.p")
+        self.nodes.to_pickle("../../resources/nodes.p")
+        self.edges.to_pickle("../../resources/edges.p")
 
 
 if __name__ == '__main__':

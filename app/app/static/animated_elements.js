@@ -17,7 +17,7 @@ var realtime = L.realtime({
     crossOrigin: true,
     type: 'json'
 }, {
-    interval: 100,
+    interval: 1000,
     pointToLayer: function (feature, latlng) {
         return L.marker(latlng, {
             'icon': L.icon({
