@@ -1,7 +1,8 @@
 import pandas as pd
+import random
 from geopandas import GeoDataFrame
 from shapely.geometry import Point
-from queue import PriorityDict
+from app.routing.queue import PriorityDict
 
 
 class Node:
@@ -23,6 +24,25 @@ class Graph:
         edges = self.__prepare_edges(edges)
         joined = self.__join(edges, self.nodes)
         self.graph = self.__adjacent(joined)
+
+    @classmethod
+    def load_default(cls):
+        nodes = pd.read_pickle("../../resources/nodes.p")
+        edges = pd.read_pickle("../../resources/edges.p")
+        return Graph(nodes, edges)
+
+    def seed(self):
+        start_id = random.choice(list(self.graph.keys()))
+        return self.__random(start_id)
+
+    def next(self, start_id):
+        self.__random(start_id)
+
+    def __random(self, start_id):
+        end_id = random.choice(list(self.graph[start_id].neighbors.keys()))
+        start = self.graph[start_id]
+        end = self.graph[end_id]
+        return start.geometry, end.geometry, end_id
 
     @staticmethod
     def __prepare_nodes(nodes):

@@ -2,8 +2,8 @@ import math
 import abc
 import random
 import pandas as pd
-from shapely.geometry import Point, LineString, Polygon, MultiPoint
-from graph import Graph
+from shapely.geometry import Point, Polygon
+from app.routing.node import Graph
 # TODO velocity model (curve, surface, mean/std)
 # TODO battery model (battery consumption)
 
@@ -40,19 +40,18 @@ class Shuttle(Entity):
         self.position = Point((x, y))
         print(self.position)
         if not self.position.within(self.edge):
-            print("out")
             self.__pick_next()
         self.time = current_time
 
     def __pick_next(self):
         edge = self.graph.next_edge(self.start_id, self.end_id)
+        print(edge)
         self.position, self.edge, self.a, self.start_id, self.end_id = self.__set_edge(edge)
 
     @staticmethod
     def __set_edge(edge):
         start, end, start_id, end_id = edge
         azimuth = math.atan2(end.y - start.y, end.x - start.x)
-        #edge = LineString([start, end])
         edge = Polygon(((start.x, start.y), (start.x, end.y), (end.x, end.y), (end.x, start.y)))
         return start, edge, azimuth, start_id, end_id
 
@@ -71,7 +70,6 @@ if __name__ == '__main__':
     node_data = [['N1', 52.3, 13.4], ['N2', 52.4, 13.4], ['N3', 52.4, 13.3], ['N4', 52.3, 13.3]]
     edge_data = [['N1', 'N2', 30.0], ['N2', 'N3', 20.0], ['N3', 'N4', 45.0], ['N4', 'N1', 25.0]]
     nodes = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
-    nodes.set_index('id', inplace=True)
     edges = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
     shuttle = Shuttle(Graph(nodes, edges), 0, VelocityModel())
     print(shuttle.current_position())
