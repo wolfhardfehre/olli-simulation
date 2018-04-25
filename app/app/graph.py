@@ -3,6 +3,7 @@ import random
 from geopandas import GeoDataFrame
 from shapely.geometry import Point
 
+
 class Graph:
 
     def __init__(self, nodes, edges):

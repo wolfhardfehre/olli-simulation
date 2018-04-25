@@ -1,7 +1,4 @@
-
 from graph import Graph
-import pandas as pd
-
 from entities import Shuttle, VelocityModel
 
 
@@ -14,9 +11,9 @@ class StateGenerator:
             cls.instance = StateGenerator()
         return cls.instance
 
-    def __init__(self, start_time='2018-02-14 15:40:00', end_time='2018-02-14 16:05:00'):
-        self.time = 0
-        self.shuttle = Shuttle(Graph.load_default(), 0, VelocityModel())
+    def __init__(self):
+        self.time = 0.0
+        self.shuttle = Shuttle(Graph.load_default(), self.time, VelocityModel())
 
     def next_coordinate(self):
         self.time += 1

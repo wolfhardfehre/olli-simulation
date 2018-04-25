@@ -1,6 +1,9 @@
 import unittest
 import vcr
 import requests
+import os
+
+print(os.getcwd())
 
 from app.graph_downloader.graph_downloader import QUERY_TEMPLATE
 from app.graph_downloader.graph_downloader import Downloader
