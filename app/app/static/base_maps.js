@@ -15,7 +15,7 @@ for (var i=0; i<baseConfig.length; i++) {
     var tokens = token;
     var mapconf = baseConfig[i];
     mapconf.layer = new L.TileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
-            {maxZoom:22, attribution:attr, id:mapconf.mapid, accessToken:tokens});
+            {maxZoom:18, attribution:attr, id:mapconf.mapid, accessToken:tokens});
     layersControl.addBaseLayer(mapconf.layer, mapconf.name);
 }
 map.addLayer(baseConfig[0].layer);

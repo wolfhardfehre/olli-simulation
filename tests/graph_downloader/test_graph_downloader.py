@@ -1,6 +1,9 @@
 import unittest
 import vcr
 import requests
+import os
+
+print(os.getcwd())
 
 from app.graph_downloader.graph_downloader import QUERY_TEMPLATE
 from app.graph_downloader.graph_downloader import Downloader
@@ -29,8 +32,8 @@ class DownloaderTest(unittest.TestCase):
         response = requests.get(url=DEFAULT_URL, params=params).json()
         downloader = Downloader(response)
 
-        self.assertEqual(119, len(downloader.nodes.index))
-        self.assertEqual(114, len(downloader.edges.index))
+        self.assertEqual(443, len(downloader.nodes.index))
+        self.assertEqual(489, len(downloader.edges.index))
 
 
 if __name__ == '__main__':

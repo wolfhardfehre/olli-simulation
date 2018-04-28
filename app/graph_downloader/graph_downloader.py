@@ -4,7 +4,7 @@ from app.tools.geo_tools import meters
 
 
 DEFAULT_URL = 'https://www.overpass-api.de/api/interpreter'
-QUERY_TEMPLATE = '[out:json];way[highway][highway=service]({:f},{:f},{:f},{:f});out geom;'
+QUERY_TEMPLATE = '[out:json];way[highway]({:f},{:f},{:f},{:f});out geom;'
 
 
 def fetch_geometries(bounding_box, url=DEFAULT_URL):

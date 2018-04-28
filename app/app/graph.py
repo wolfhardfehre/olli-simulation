@@ -10,26 +10,36 @@ class Graph:
         self.nodes = self.__create_nodes(nodes)
         self.adjacent = self.__create_adjacent(edges)
 
-    def get_adjacent_to(self, start_id):
-        end_id = self.__seed_end_node(start_id)
+    @classmethod
+    def load_default(cls):
+        nodes = pd.read_pickle("../../resources/nodes.p")
+        edges = pd.read_pickle("../../resources/edges.p")
+        return Graph(nodes, edges)
+
+    def next_edge(self, previous_start, previous_end):
+        start = self.node_by_id(previous_end)
+        end_id = self.__seed_end_node(previous_end, previous_start)
         end = self.node_by_id(end_id)
-        start = self.node_by_id(start_id)
-        return start.geometry, end.geometry, end_id
+        return start.geometry, end.geometry, previous_end, end_id
 
     def seed(self):
         start = self.__seed_start_node()
-        end_id = self.__seed_end_node(start.index.values[0])
+        start_id = start.index.values[0]
+        end_id = self.__seed_end_node(start_id)
         end = self.node_by_id(end_id)
-        return start.iloc[0].geometry, end.geometry, end_id
+        return start.iloc[0].geometry, end.geometry, start_id, end_id
 
-    def node_by_id(self, id):
-        return self.nodes.loc[id]
+    def node_by_id(self, node_id):
+        return self.nodes.loc[node_id]
 
     def __seed_start_node(self):
         return self.nodes.sample(n=1)
 
-    def __seed_end_node(self, node):
-        return random.choice(self.adjacent[node])
+    def __seed_end_node(self, node, exclude=None):
+        neighbors = self.adjacent[node][:]
+        if exclude is not None and exclude in neighbors and len(neighbors) > 1:
+            neighbors.remove(exclude)
+        return random.choice(neighbors)
 
     @staticmethod
     def __create_nodes(nodes):
@@ -37,7 +47,6 @@ class Graph:
         nodes = GeoDataFrame(nodes.drop(['lat', 'lon'], axis=1),
                              crs={'init': 'epsg:4326'},
                              geometry=geometry)
-        nodes.set_index('id', inplace=True)
         return nodes
 
     @staticmethod
@@ -50,7 +59,5 @@ class Graph:
 
 
 if __name__ == '__main__':
-    loaded_nodes = pd.read_pickle("../../resources/nodes.p")
-    loaded_edges = pd.read_pickle("../../resources/edges.p")
-    graph = Graph(loaded_nodes, loaded_edges)
+    graph = Graph.load_default()
     print(graph.adjacent)

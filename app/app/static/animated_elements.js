@@ -17,7 +17,7 @@ var realtime = L.realtime({
     crossOrigin: true,
     type: 'json'
 }, {
-    interval: 100,
+    interval: 1000,
     pointToLayer: function (feature, latlng) {
         return L.marker(latlng, {
             'icon': L.icon({
@@ -30,5 +30,5 @@ var realtime = L.realtime({
 }).addTo(map);
 
 realtime.on('update', function(e) {
-    map.fitBounds(realtime.getBounds(), {maxZoom: 20});
+    map.fitBounds(realtime.getBounds(), {maxZoom: 18});
 });
