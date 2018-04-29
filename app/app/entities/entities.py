@@ -2,8 +2,11 @@ import math
 import abc
 import random
 import pandas as pd
-from shapely.geometry import Point, LineString, Polygon, MultiPoint
-from graph import Graph
+from shapely.geometry import Point, Polygon
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+from app.app.routing.graph import Graph
 # TODO velocity model (curve, surface, mean/std)
 # TODO battery model (battery consumption)
 
@@ -38,9 +41,7 @@ class Shuttle(Entity):
         x = self.position.x + delta_degrees * math.cos(self.position.y) * math.cos(self.a)
         y = self.position.y + delta_degrees * math.sin(self.a)
         self.position = Point((x, y))
-        print(self.position)
         if not self.position.within(self.edge):
-            print("out")
             self.__pick_next()
         self.time = current_time
 
@@ -52,7 +53,6 @@ class Shuttle(Entity):
     def __set_edge(edge):
         start, end, start_id, end_id = edge
         azimuth = math.atan2(end.y - start.y, end.x - start.x)
-        #edge = LineString([start, end])
         edge = Polygon(((start.x, start.y), (start.x, end.y), (end.x, end.y), (end.x, start.y)))
         return start, edge, azimuth, start_id, end_id
 

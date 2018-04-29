@@ -1,4 +1,4 @@
-from app import db
+from app.app.app import db
 from geoalchemy2 import Geography
 
 db.reflect()

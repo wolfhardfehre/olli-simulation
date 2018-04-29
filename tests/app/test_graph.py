@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 
-from app.app.graph import Graph
+from app.app.routing.graph import Graph
 
 
 class GraphTest(unittest.TestCase):
@@ -15,11 +15,11 @@ class GraphTest(unittest.TestCase):
         graph = Graph(nodes, edges)
 
         self.assertEqual(4, len(graph.nodes.index))
-        self.assertEqual(4, len(graph.adjacent))
-        self.assertEqual(['4', '2'], graph.adjacent['1'])
-        self.assertEqual(['1', '3'], graph.adjacent['2'])
-        self.assertEqual(['2', '4'], graph.adjacent['3'])
-        self.assertEqual(['3', '1'], graph.adjacent['4'])
+        self.assertEqual(4, len(graph.graph))
+        self.assertEqual({'4', '2'}, set(graph.graph['1'].neighbors.keys()))
+        self.assertEqual({'1', '3'}, set(graph.graph['2'].neighbors.keys()))
+        self.assertEqual({'2', '4'}, set(graph.graph['3'].neighbors.keys()))
+        self.assertEqual({'3', '1'}, set(graph.graph['4'].neighbors.keys()))
 
 
 if __name__ == '__main__':

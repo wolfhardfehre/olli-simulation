@@ -1,8 +1,13 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
 from flask import render_template, request, jsonify
-from app import app
-from secret import TOKEN
-import models
-from state_generator import StateGenerator
+from app.app.app import app
+from app.app.models import VehicleStates
+from app.app.models import geo_jsonify
+from app.app.secret import TOKEN
+from app.app.state_generator import StateGenerator
 
 
 @app.route('/')
@@ -36,7 +41,7 @@ def animate_shuttle_between():
 @app.route('/animation_feed')
 def animation_feed():
     """
-    Get GeoJson for a animation.
+    Get GeoJson for an animation.
 
     Returns:
         a GeoJson.
@@ -57,8 +62,8 @@ def animation_feed():
 
 
 def render_to_static(start_time, end_time):
-    results = models.VehicleStates.query.filter(models.VehicleStates.last_seen.between(start_time, end_time))
-    results = models.geo_jsonify(results.all())
+    results = VehicleStates.query.filter(VehicleStates.last_seen.between(start_time, end_time))
+    results = geo_jsonify(results.all())
     return render_template('static_index.html', token=TOKEN, vehicle_states=results)
 
 
