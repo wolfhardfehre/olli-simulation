@@ -48,7 +48,7 @@ def animation_feed():
 
     """
     state_generator = StateGenerator.get_instance()
-    longitude, latitude = state_generator.next_coordinate()
+    longitude, latitude, properties = state_generator.next()
     return jsonify({
         'geometry': {
             'type': 'Point',
@@ -57,7 +57,7 @@ def animation_feed():
             ]
         },
         'type': 'Feature',
-        'properties': {}
+        'properties': properties
     })
 
 
