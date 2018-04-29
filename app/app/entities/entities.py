@@ -38,7 +38,7 @@ class Shuttle(Entity):
     def move(self, current_time):
         speed = self.velocity_model.current_velocity()
         delta_degrees = speed * (current_time - self.time)
-        x = self.position.x + delta_degrees * math.cos(self.position.y) * math.cos(self.a)
+        x = self.position.x + delta_degrees * math.cos(self.a)
         y = self.position.y + delta_degrees * math.sin(self.a)
         self.position = Point((x, y))
         if not self.position.within(self.edge):
