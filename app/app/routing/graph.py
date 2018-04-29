@@ -2,6 +2,7 @@ import random
 import pandas as pd
 from geopandas import GeoDataFrame
 from shapely.geometry import Point
+from shapely.ops import nearest_points
 from app.app.routing.node import Node
 
 
@@ -28,6 +29,9 @@ class Graph:
         end = self.graph[end_id]
         return start.geometry, end.geometry, previous_end_id, end_id
 
+    def get_closest(self, search_point):
+        return nearest_points(search_point, self.nodes.unary_union)[1]
+
     def __seed_end_node(self, node, exclude=None):
         neighbors = list(self.graph[node].neighbors.keys())
         if exclude is not None and exclude in neighbors and len(neighbors) > 1:
@@ -36,7 +40,7 @@ class Graph:
 
     @staticmethod
     def __prepare_nodes(nodes):
-        geometry = [Point(xy) for xy in zip(nodes.lat, nodes.lon)]
+        geometry = [Point(xy) for xy in zip(nodes.lon, nodes.lat)]
         nodes = GeoDataFrame(nodes.drop(['lat', 'lon'], axis=1), crs={'init': 'epsg:4326'}, geometry=geometry)
         return nodes
 
@@ -61,3 +65,15 @@ class Graph:
                 adjacent[index] = Node(index, geom)
             adjacent.get(index).add_neighbor(row.node2, row.distance)
         return adjacent
+
+
+if __name__ == '__main__':
+    node_data = [['1', 52.3, 13.4], ['2', 52.4, 13.4], ['3', 52.4, 13.3], ['4', 52.3, 13.3]]
+    edge_data = [['1', '2', 30], ['2', '3', 20], ['3', '4', 20], ['4', '1', 25]]
+    nodes_df = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
+    nodes_df.set_index('id', inplace=True)
+    edges_df = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
+    g = Graph(nodes_df, edges_df)
+    search_point = Point(52.39, 13.29)
+    closest = g.get_closest(search_point)
+    print(closest.x, closest.y)

@@ -9,8 +9,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from app.app.routing.graph import Graph
-# TODO velocity model (curve, surface, mean/std)
-# TODO battery model (battery consumption)
+
 
 LATITUDE_APPROX = 111320.0
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S%z'

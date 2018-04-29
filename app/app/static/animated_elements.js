@@ -22,5 +22,5 @@ var realtime = L.realtime({
 }).addTo(map);
 
 realtime.on('update', function(e) {
-    map.fitBounds(realtime.getBounds(), {maxZoom: 18});
+    map.fitBounds(realtime.getBounds(), {maxZoom: 16});
 });
