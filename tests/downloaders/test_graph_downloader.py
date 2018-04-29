@@ -1,10 +1,6 @@
 import unittest
 import vcr
 import requests
-import os
-
-print(os.getcwd())
-
 from app.downloaders.graph_downloader import QUERY_TEMPLATE
 from app.downloaders.graph_downloader import Downloader
 from app.downloaders.graph_downloader import DEFAULT_URL
