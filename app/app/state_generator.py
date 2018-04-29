@@ -1,5 +1,5 @@
-from graph import Graph
-from entities import Shuttle, VelocityModel
+from app.app.routing.graph import Graph
+from app.app.entities.entities import Shuttle, VelocityModel
 
 
 class StateGenerator:

@@ -14,18 +14,18 @@ class PriorityDict(dict):
             raise IndexError("smallest of empty priorityDictionary")
         heap = self.__heap
         while heap[0][1] not in self or self[heap[0][1]] != heap[0][0]:
-            lastItem = heap.pop()
-            insertionPoint = 0
+            last_item = heap.pop()
+            insertion_point = 0
             while 1:
-                smallChild = 2 * insertionPoint + 1
-                if smallChild + 1 < len(heap) and \
-                        heap[smallChild] > heap[smallChild + 1]:
-                    smallChild += 1
-                if smallChild >= len(heap) or lastItem <= heap[smallChild]:
-                    heap[insertionPoint] = lastItem
+                small_child = 2 * insertion_point + 1
+                if small_child + 1 < len(heap) and \
+                        heap[small_child] > heap[small_child + 1]:
+                    small_child += 1
+                if small_child >= len(heap) or last_item <= heap[small_child]:
+                    heap[insertion_point] = last_item
                     break
-                heap[insertionPoint] = heap[smallChild]
-                insertionPoint = smallChild
+                heap[insertion_point] = heap[small_child]
+                insertion_point = small_child
         return heap[0][1]
 
     def __iter__(self):
@@ -44,14 +44,14 @@ class PriorityDict(dict):
             self.__heap = [(v, k) for k, v in self.items()]
             self.__heap.sort()
         else:
-            newPair = (val, key)
-            insertionPoint = len(heap)
+            new_pair = (val, key)
+            insertion_point = len(heap)
             heap.append(None)
-            while insertionPoint > 0 and \
-                    newPair < heap[(insertionPoint - 1) // 2]:
-                heap[insertionPoint] = heap[(insertionPoint - 1) // 2]
-                insertionPoint = (insertionPoint - 1) // 2
-            heap[insertionPoint] = newPair
+            while insertion_point > 0 and \
+                    new_pair < heap[(insertion_point - 1) // 2]:
+                heap[insertion_point] = heap[(insertion_point - 1) // 2]
+                insertion_point = (insertion_point - 1) // 2
+            heap[insertion_point] = new_pair
 
     def set_default(self, key, val):
         if key not in self:
