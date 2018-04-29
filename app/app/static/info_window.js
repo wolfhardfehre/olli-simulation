@@ -12,7 +12,6 @@ info.update = function (props) {
             coll += key + ': ' + props[key] + '<br>';
         }
     }
-	this._div.innerHTML = '<h4>Information</h4>' + (
-        props ? '<sup>' + coll + '</sup>' : 'Hover over an element' );
+	this._div.innerHTML = '<h4>Information</h4>' + ('<sup>' + coll + '</sup>');
 };
 info.addTo(map);

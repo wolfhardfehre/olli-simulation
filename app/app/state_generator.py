@@ -1,5 +1,5 @@
 from app.app.routing.graph import Graph
-from app.app.entities.entities import Shuttle, VelocityModel
+from app.app.entities.entities import Shuttle, VelocityModel, BatteryModel
 
 
 class StateGenerator:
@@ -13,10 +13,10 @@ class StateGenerator:
 
     def __init__(self):
         self.time = 0.0
-        self.shuttle = Shuttle(Graph.load_default(), self.time, VelocityModel())
+        self.shuttle = Shuttle(Graph.load_default(), self.time, VelocityModel(), BatteryModel())
 
-    def next_coordinate(self):
+    def next(self):
         self.time += 1
         self.shuttle.move(self.time)
-        position = self.shuttle.current_position()
-        return position.y, position.x
+        position, properties = self.shuttle.current_state()
+        return position.y, position.x, properties

@@ -3,15 +3,6 @@ function setStyle(feature) {
     return feature.properties && feature.style;
 }
 
-var geojsonMarkerOptions = {
-    radius: 18,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
-
 var realtime = L.realtime({
     url: 'http://127.0.0.1:5000/animation_feed',
     crossOrigin: true,
@@ -19,6 +10,7 @@ var realtime = L.realtime({
 }, {
     interval: 1000,
     pointToLayer: function (feature, latlng) {
+        info.update(feature.properties)
         return L.marker(latlng, {
             'icon': L.icon({
                 iconUrl: '../static/images/olli.png',
