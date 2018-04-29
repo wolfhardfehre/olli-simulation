@@ -19,3 +19,8 @@ UPDATE vehicle_states SET seen_on = last_seen::Date;
 CREATE INDEX ON vehicle_states (last_seen);
 CREATE INDEX ON vehicle_states (seen_on);
 EOF
+
+psql open_olli <<EOF
+CREATE TABLE charge_stations (id SERIAL PRIMARY KEY, data_type text, name text, geometry Geography);
+CREATE INDEX charge_stations_gix ON charge_stations USING GIST (geometry);
+EOF
