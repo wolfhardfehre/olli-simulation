@@ -5,9 +5,9 @@ import os
 
 print(os.getcwd())
 
-from app.graph_downloader.graph_downloader import QUERY_TEMPLATE
-from app.graph_downloader.graph_downloader import Downloader
-from app.graph_downloader.graph_downloader import DEFAULT_URL
+from app.downloaders.graph_downloader import QUERY_TEMPLATE
+from app.downloaders.graph_downloader import Downloader
+from app.downloaders.graph_downloader import DEFAULT_URL
 
 my_vcr = vcr.VCR(
     serializer='yaml',
