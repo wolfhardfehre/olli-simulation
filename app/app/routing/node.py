@@ -1,6 +1,6 @@
 class Node:
-    def __init__(self, node_id, geometry):
-        self.node_id = node_id
+    def __init__(self, id, geometry):
+        self.id = id
         self.geometry = geometry
         self.neighbors = {}
 
@@ -8,4 +8,4 @@ class Node:
         self.neighbors[node_id] = distance
 
     def __repr__(self):
-        return 'Node[id={}, geom={}, neighbors={}]'.format(self.node_id, self.geometry, self.neighbors)
+        return 'Node[id={}, geom={}, neighbors={}]'.format(self.id, self.geometry, self.neighbors)

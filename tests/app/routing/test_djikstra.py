@@ -15,4 +15,4 @@ class DjikstraTest(unittest.TestCase):
         g = Graph(nodes_df, edges_df)
 
         shortest = shortest_path(g, '1', '3')
-        self.assertEqual(['1', '4', '3'], shortest)
+        self.assertEqual([v.id for v in shortest.vertex_list], ['1', '4', '3'])

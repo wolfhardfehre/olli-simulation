@@ -4,20 +4,21 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from app.app.routing.queue import PriorityDict
 from app.app.routing.graph import Graph
+from app.app.routing.route import Route
 
 
 def shortest_path(graph, start, end):
     """ Shortest Path by David Eppstein, UC Irvine, 8 Mar 2002 """
     distances, predecessors = dijkstra(graph.graph, start, end)
     path = []
-    while 1:
-        path.append(end)
+    g = graph.graph
+    while True:
+        path.append(g[end])
         if end == start:
             break
         end = predecessors[end]
     path.reverse()
-    return path
-
+    return Route(path)
 
 def dijkstra(graph, start, end=None):
     """ Dijkstra by David Eppstein, UC Irvine, 8 Mar 2002 """
