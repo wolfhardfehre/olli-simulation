@@ -1,4 +1,3 @@
-import pandas as pd
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
@@ -43,12 +42,6 @@ def dijkstra(graph, start, end=None):
 
 
 if __name__ == '__main__':
-    node_data = [['1', 52.3, 13.4], ['2', 52.4, 13.4], ['3', 52.4, 13.3], ['4', 52.3, 13.3]]
-    edge_data = [['1', '2', 30], ['2', '3', 20], ['3', '4', 20], ['4', '1', 25]]
-    nodes_df = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
-    nodes_df.set_index('id', inplace=True)
-    edges_df = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
-    g = Graph(nodes_df, edges_df)
-
-    shortest = shortest_path(g, '1', '3')
+    g = Graph.load_default()
+    shortest = shortest_path(g, 27785378, 2493824077)
     print(shortest)

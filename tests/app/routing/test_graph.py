@@ -26,6 +26,14 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(52.4, closest.iloc[0].geometry.y)
         self.assertEqual('N3', closest.index.values[0])
 
+    def test_get_coordinate(self):
+        nodes, edges = self.__get_nodes_and_edges()
+        graph = Graph(nodes, edges)
+        cordinate = graph.get_coordinate('N3')
+        self.assertEqual(13.3, cordinate.iloc[0].geometry.x)
+        self.assertEqual(52.4, cordinate.iloc[0].geometry.y)
+        self.assertEqual('N3', cordinate.index.values[0])
+
     @staticmethod
     def __get_nodes_and_edges():
         node_data = [['N1', 52.3, 13.4], ['N2', 52.4, 13.4], ['N3', 52.4, 13.3], ['N4', 52.3, 13.3]]
