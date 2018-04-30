@@ -1,0 +1,7 @@
+---
+
+- hosts: appservers
+  roles:
+    - { role: base-app, tags: ['base-app'] }
+    # - { role: ssh-access, tags: ['ssh-access'] }
+    # - { role: nginx, tags: ['nginx'] }

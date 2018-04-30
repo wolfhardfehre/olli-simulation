@@ -12,7 +12,7 @@ resource "aws_key_pair" "deployer" {
 }
 
 resource "aws_instance" "olli-server" {
-  ami           = "ami-976152f2"
+  ami           = "ami-916f59f4"
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.deployer.key_name}"
   vpc_security_group_ids = ["${module.network.security_group_id}"]

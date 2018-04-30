@@ -1,0 +1,33 @@
+---
+
+# Basic system setup of an appserver
+
+- name: set hostname
+  hostname: name=olli
+
+- name: install prerequisites
+  apt: name={{item}} update_cache=yes
+  with_items:
+    - git
+    - tmux
+    - htop
+    - python3-pip
+
+- name: create git directory
+  file: path=/srv/olli-simulation
+
+- name: create apprunner
+  user: name=apprunner createhome=no home=/srv/olli-simulation
+
+- name: initialize git repo
+  command: git init
+  args:
+    chdir: /srv/olli-simulation
+
+- name: configure git repo allow to push
+  command: git config receive.denyCurrentBranch ignore
+  args:
+    chdir: /srv/olli-simulation
+
+- name: configure railsapp git repo hook
+  copy: dest=/srv/olli-simulation/.git/hooks/post-receive src=post-receive mode=0755
