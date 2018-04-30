@@ -8,4 +8,5 @@ class Node:
         self.neighbors[node_id] = distance
 
     def __repr__(self):
-        return 'Node[id={}, geom={}, neighbors={}]'.format(self.node_id, self.geometry, self.neighbors)
+        return 'Node[id={}, geom={}, neighbors={}]'.format(
+            self.node_id, self.geometry, self.neighbors)

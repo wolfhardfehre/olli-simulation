@@ -1,4 +1,3 @@
-import random
 import pandas as pd
 from geopandas import GeoDataFrame
 from shapely.geometry import Point
@@ -22,28 +21,12 @@ class Graph:
         edges = pd.read_pickle("./resources/edges.p")
         return Graph(nodes, edges)
 
-    def seed(self):
-        start_id = random.choice(list(self.graph.keys()))
-        return self.next_edge(None, start_id)
-
-    def next_edge(self, previous_start_id, previous_end_id):
-        start = self.graph[previous_end_id]
-        end_id = self.__seed_end_node(previous_end_id, previous_start_id)
-        end = self.graph[end_id]
-        return start.geometry, end.geometry, previous_end_id, end_id
-
     def get_closest(self, search_point):
         nearest = self.nodes['geometry'] == nearest_points(search_point, self.nodes.unary_union)[1]
         return self.nodes[nearest]
 
     def get_coordinate(self, id):
         return self.nodes.loc[[id]]
-
-    def __seed_end_node(self, node, exclude=None):
-        neighbors = list(self.graph[node].neighbors.keys())
-        if exclude is not None and exclude in neighbors and len(neighbors) > 1:
-            neighbors.remove(exclude)
-        return random.choice(neighbors)
 
     @staticmethod
     def __prepare_nodes(nodes):
@@ -65,6 +48,20 @@ class Graph:
 
     @staticmethod
     def __adjacent(joined):
+        """
+        Creates a adjacent dict of nodes with their neighbors.
+
+        Parameters
+        ----------
+        joined: DataFrame
+            containing edges with origin, destination node, the distance between
+            and their corresponding geometries.
+
+        Returns
+        -------
+        dict containing node ids as keys and corresponding nodes as values.
+
+        """
         adjacent = {}
         for idx, row in joined.iterrows():
             index, geom = row.node1, row.geometry
