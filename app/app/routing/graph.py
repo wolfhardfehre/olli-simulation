@@ -36,6 +36,9 @@ class Graph:
         nearest = self.nodes['geometry'] == nearest_points(search_point, self.nodes.unary_union)[1]
         return self.nodes[nearest]
 
+    def get_coordinate(self, id):
+        return self.nodes.loc[[id]]
+
     def __seed_end_node(self, node, exclude=None):
         neighbors = list(self.graph[node].neighbors.keys())
         if exclude is not None and exclude in neighbors and len(neighbors) > 1:
@@ -72,12 +75,10 @@ class Graph:
 
 
 if __name__ == '__main__':
-    node_data = [['1', 52.3, 13.4], ['2', 52.4, 13.4], ['3', 52.4, 13.3], ['4', 52.3, 13.3]]
-    edge_data = [['1', '2', 30], ['2', '3', 20], ['3', '4', 20], ['4', '1', 25]]
-    nodes_df = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
-    nodes_df.set_index('id', inplace=True)
-    edges_df = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
     g = Graph.load_default()
-    search_point = Point(52.4871594,13.3613848)
+    search_point = Point(13.3587658,52.4857809)
     closest = g.get_closest(search_point)
     print(closest)
+
+    coordinate = g.get_coordinate(27785378)
+    print(coordinate)

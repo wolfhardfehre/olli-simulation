@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from app.app.routing.djikstra import shortest_path
+from app.app.routing.dijkstra import shortest_path
 from app.app.routing.graph import Graph
 
 
