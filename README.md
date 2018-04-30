@@ -31,6 +31,10 @@ mobile application. The underlying vehicle data can be found [here][2]. To build
 10) you probably have to configure PyCharm settings (interpreter) if you use this IDE
 
 
+## Run Tests
+
+`python -m unittest discover`
+
 ## Communications
 
 * Via [Slack][5]

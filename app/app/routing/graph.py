@@ -3,6 +3,9 @@ import pandas as pd
 from geopandas import GeoDataFrame
 from shapely.geometry import Point
 from shapely.ops import nearest_points
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from app.app.routing.node import Node
 
 
@@ -30,7 +33,8 @@ class Graph:
         return start.geometry, end.geometry, previous_end_id, end_id
 
     def get_closest(self, search_point):
-        return nearest_points(search_point, self.nodes.unary_union)[1]
+        nearest = self.nodes['geometry'] == nearest_points(search_point, self.nodes.unary_union)[1]
+        return self.nodes[nearest]
 
     def __seed_end_node(self, node, exclude=None):
         neighbors = list(self.graph[node].neighbors.keys())
@@ -73,7 +77,7 @@ if __name__ == '__main__':
     nodes_df = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
     nodes_df.set_index('id', inplace=True)
     edges_df = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
-    g = Graph(nodes_df, edges_df)
-    search_point = Point(52.39, 13.29)
+    g = Graph.load_default()
+    search_point = Point(52.4871594,13.3613848)
     closest = g.get_closest(search_point)
-    print(closest.x, closest.y)
+    print(closest)

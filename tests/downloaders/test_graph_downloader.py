@@ -7,7 +7,7 @@ from app.downloaders.graph_downloader import DEFAULT_URL
 
 my_vcr = vcr.VCR(
     serializer='yaml',
-    cassette_library_dir='fixtures/vcr_cassettes',
+    cassette_library_dir='tests/fixtures/vcr_cassettes',
     record_mode='once',
     match_on=['uri', 'method'],
 )
@@ -22,7 +22,7 @@ BBOX = [SOUTH, WEST, NORTH, EAST]
 
 class DownloaderTest(unittest.TestCase):
 
-    @my_vcr.use_cassette('fixtures/vcr_cassettes/overpass.yaml')
+    @my_vcr.use_cassette('tests/fixtures/vcr_cassettes/overpass.yaml')
     def test_downloading_and_graph_building(self):
         params = dict(data=QUERY_TEMPLATE.format(*BBOX))
         response = requests.get(url=DEFAULT_URL, params=params).json()

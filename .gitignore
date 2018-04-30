@@ -4,7 +4,7 @@ app/app/secret.py
 app/__pycache__
 app/app/__pycache__
 venv
-app/app/__pycache__/graph.cpython-35.pyc
 app/tools/__pycache__/
 *.p
 *.pyc
+/tests/fixtures/vcr_cassettes/overpass.yaml
