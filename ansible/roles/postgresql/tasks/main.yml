@@ -1,0 +1,35 @@
+---
+
+- name: install postgresql
+  apt: name={{item}} update_cache=yes
+  with_items:
+    - postgresql
+    - postgresql-contrib
+    - python-psycopg2
+    - postgresql-9.5-postgis-scripts
+
+- name: create database user
+  postgresql_user: name=root password={{apprunner_database_password}}
+  become: true
+  become_user: postgres
+
+- name: create postgres extensions
+  postgresql_ext: db=open_olli name=postgis
+  become: true
+  become_user: postgres
+
+- name: create database
+  postgresql_db: name=open_olli
+  become: true
+  become_user: postgres
+
+- name: create table vehicle_states
+  command: psql open_olli -c "CREATE TABLE IF NOT EXISTS vehicle_states (id integer PRIMARY KEY, vehicle_id text, latitude numeric, longitude numeric, theta numeric, speed numeric, battery numeric, doors boolean, last_seen Timestamp, created_at Timestamp);"
+
+- name: copy vehicle_states
+  command: psql -d open_olli -c "copy vehicle_states from '/srv/olli-simulation/resources/vehicle_states.csv'  WITH CSV HEADER DELIMITER ';'"
+  become: true
+  become_user: postgres
+
+- name: alter vehicle states
+  command: psql open_olli -c "ALTER TABLE vehicle_states ADD COLUMN geometry Geography; ALTER TABLE vehicle_states ADD COLUMN seen_on Date; UPDATE vehicle_states SET geometry = ST_SetSRID(ST_MakePoint(longitude, latitude), 4326); UPDATE vehicle_states SET seen_on = last_seen::Date; CREATE INDEX ON vehicle_states (last_seen); CREATE INDEX ON vehicle_states (seen_on);"

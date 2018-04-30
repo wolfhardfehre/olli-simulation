@@ -3,5 +3,6 @@
 - hosts: appservers
   roles:
     - { role: base-app, tags: ['base-app'] }
+    - { role: postgresql, tags: ['postgresql'] }
     # - { role: ssh-access, tags: ['ssh-access'] }
     # - { role: nginx, tags: ['nginx'] }
