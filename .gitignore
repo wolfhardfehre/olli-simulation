@@ -8,3 +8,12 @@ app/app/__pycache__/graph.cpython-35.pyc
 app/tools/__pycache__/
 *.p
 *.pyc
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
