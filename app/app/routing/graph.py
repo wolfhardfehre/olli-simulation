@@ -80,4 +80,4 @@ if __name__ == '__main__':
     g = Graph.load_default()
     search_point = Point(52.4871594,13.3613848)
     closest = g.get_closest(search_point)
-    print(closest)#.index.values[0])
+    print(closest)
