@@ -8,7 +8,7 @@ var realtime = L.realtime({
     crossOrigin: true,
     type: 'json'
 }, {
-    interval: 1000,
+    interval: 100,
     pointToLayer: function (feature, latlng) {
         info.update(feature.properties)
         return L.marker(latlng, {

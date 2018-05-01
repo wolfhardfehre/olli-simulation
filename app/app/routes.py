@@ -8,6 +8,7 @@ from app.app.models import VehicleStates
 from app.app.models import geo_jsonify
 from app.app.secret import TOKEN
 from app.app.state_generator import StateGenerator
+from app.app.round_trip_generator import RoundTripGenerator
 
 
 @app.route('/')
@@ -48,17 +49,25 @@ def animation_feed():
 
     """
     state_generator = StateGenerator.get_instance()
-    longitude, latitude, properties = state_generator.next()
-    return jsonify({
-        'geometry': {
-            'type': 'Point',
-            'coordinates': [
-                longitude, latitude
-            ]
-        },
-        'type': 'Feature',
-        'properties': properties
-    })
+    return jsonify(state_generator.next())
+
+
+@app.route('/round_trip')
+def round_trip():
+    return render_template('round_trip_index.html', token=TOKEN)
+
+
+@app.route('/round_trip_feed')
+def round_trip_feed():
+    state_generator = RoundTripGenerator.get_instance()
+    return jsonify(state_generator.next())
+
+
+@app.route('/round_trip_ground_feed')
+def round_trip_ground_feed():
+    state_generator = RoundTripGenerator.get_instance()
+    ground_data = state_generator.current_ground_data()
+    return jsonify(ground_data)
 
 
 def render_to_static(start_time, end_time):
