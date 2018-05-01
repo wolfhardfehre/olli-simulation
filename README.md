@@ -41,11 +41,8 @@ mobile application. The underlying vehicle data can be found [here][2]. To build
 
 ## Special Thanks To
 
-* [VBB-Rest](https://github.com/derhuerst/vbb-rest/blob/0589930aac08296877d8626193d5ea68aee03c95/docs/index.md) 
-by [derhuerst](https://github.com/derhuerst)
-for Public-Transport-API
-* [VMZ Berlin Betreibergesellschaft mbH](https://www.mcloud.de/web/guest/suche/-/results/detail/berlinelektro-ladestationeninberlin?_mysearchportlet_backURL=https%3A%2F%2Fwww.mcloud.de%2Fweb%2Fguest%2Fsuche%2F-%2Fresults%2FsearchAction%3F_mysearchportlet_currentAggs%3Dextras.subgroups%253A%2522data-run%2522%26_mysearchportlet_page%3D1)
-for Charging-Stations-API
+* [VBB-Rest][6] by [derhuerst][7] for a Public-Transport-API
+* [VMZ Berlin Betreibergesellschaft mbH][8] for a Charging-Stations-API
 
 ## License
 
@@ -69,3 +66,6 @@ for Charging-Stations-API
 [3]: https://www.openstreetmap.org
 [4]: https://wiki.openstreetmap.org/wiki/Overpass_API
 [5]: https://open-olli-hack.slack.com/messages
+[6]: https://github.com/derhuerst/vbb-rest/blob/0589930aac08296877d8626193d5ea68aee03c95/docs/index.md
+[7]: https://github.com/derhuerst
+[8]: https://www.mcloud.de/web/guest/suche/-/results/detail/berlinelektro-ladestationeninberlin?_mysearchportlet_backURL=https%3A%2F%2Fwww.mcloud.de%2Fweb%2Fguest%2Fsuche%2F-%2Fresults%2FsearchAction%3F_mysearchportlet_currentAggs%3Dextras.subgroups%253A%2522data-run%2522%26_mysearchportlet_page%3D1
