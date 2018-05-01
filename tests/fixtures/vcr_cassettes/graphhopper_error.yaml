@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['2']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://graphhopper.com/api/1/vrp/optimize?key=3c8d0f02-49ce-4c79-92e2-6eb1965205dc
+  response:
+    body: {string: '{"message":"Bad Request","hints":[{"message":"HV000090: Unable
+        to access isUniqueVehicleId.","details":"class javax.validation.ValidationException"}]}'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,X-RateLimit-Credits']
+      Connection: [keep-alive]
+      Content-Length: ['150']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 01 May 2018 20:10:31 GMT']
+      Server: [nginx]
+      X-RateLimit-Credits: ['0']
+      X-RateLimit-Limit: ['15000']
+      X-RateLimit-Remaining: ['14990']
+      X-RateLimit-Reset: ['13769']
+    status: {code: 400, message: Bad Request}
+version: 1
