@@ -3,14 +3,14 @@ import math
 from datetime import datetime
 from pytz import timezone, utc
 from shapely.geometry import Point
-from app.app.entities.entity import Entity
+from app.app.entities.moving_entity import MovingEntity
 
 
 LATITUDE_APPROX = 111320.0
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S%z'
 
 
-class Shuttle(Entity):
+class Shuttle(MovingEntity):
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, graph, time, velocity_model, battery_model):
@@ -21,7 +21,6 @@ class Shuttle(Entity):
         self.degrees_per_hour = 0.0
         self.edge = None
         self.position = None
-        self.first_move()
 
     @abc.abstractmethod
     def first_move(self):

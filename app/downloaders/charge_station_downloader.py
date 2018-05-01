@@ -35,7 +35,6 @@ class ChargeStationDownloader:
 
     def __init__(self, json):
         self.charge_stations = self.__build_stations(json)
-        print(self.charge_stations)
 
     def __build_stations(self, json):
         df = pd.DataFrame(columns=['id','name', 'data_type', 'lat', 'lon'])
@@ -53,6 +52,8 @@ class ChargeStationDownloader:
                 'lon': lon}
 
     def save(self):
+        print('** Charge Stations **')
+        print(self.charge_stations)
         self.charge_stations.to_pickle('./resources/charge_stations.p')
 
 

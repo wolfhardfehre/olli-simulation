@@ -16,13 +16,11 @@ def fetch_geometries(bounding_box, url=DEFAULT_URL):
 class GraphDownloader:
 
     def __init__(self, json):
-        print("downloading overpass data...")
         self.json = json
         self.nodes = self.__nodes()
         self.edges = self.__edges()
 
     def __nodes(self):
-        print('building nodes...')
         nodes = []
         for element in self.json['elements']:
             for nid, geom in zip(element['nodes'], element['geometry']):
@@ -30,7 +28,6 @@ class GraphDownloader:
         return self.__build_nodes(nodes)
 
     def __edges(self):
-        print('building edges...')
         edges = []
         for element in self.json['elements']:
             for first, second in zip(element['nodes'][:-1], element['nodes'][1:]):
@@ -56,6 +53,10 @@ class GraphDownloader:
         return meters(row['lat'], row['lon'], row['lat_to'], row['lon_to'])
 
     def save(self):
+        print('** Graph Node **')
+        print(self.nodes)
+        print('** Graph Edges **')
+        print(self.edges)
         self.nodes.to_pickle("./resources/nodes.p")
         self.edges.to_pickle("./resources/edges.p")
 
@@ -66,11 +67,6 @@ if __name__ == '__main__':
     WEST = 13.352029
     EAST = 13.359325
 
-    json = fetch_geometries([SOUTH, WEST, NORTH, EAST])
-
-    downloader = GraphDownloader(json)
+    js = fetch_geometries([SOUTH, WEST, NORTH, EAST])
+    downloader = GraphDownloader(js)
     downloader.save()
-    print("*** NODES ***")
-    print(downloader.nodes)
-    print("*** EDGES ***")
-    print(downloader.edges)

@@ -18,10 +18,9 @@ class RandomGenerator:
 
     def __init__(self):
         self.time = 0.0
-        self.shuttle = RandomShuttle(Graph.load_default(),
-                                     self.time,
-                                     VelocityModel(),
-                                     BatteryModel())
+        self.shuttle = RandomShuttle(
+            Graph.load_default(), self.time, VelocityModel(), BatteryModel())
+        self.shuttle.first_move()
 
     def next(self):
         self.time += 1
