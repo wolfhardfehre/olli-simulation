@@ -2,7 +2,7 @@ import unittest
 import vcr
 import requests
 from app.downloaders.graph_downloader import QUERY_TEMPLATE
-from app.downloaders.graph_downloader import Downloader
+from app.downloaders.graph_downloader import GraphDownloader
 from app.downloaders.graph_downloader import DEFAULT_URL
 
 my_vcr = vcr.VCR(
@@ -26,7 +26,7 @@ class DownloaderTest(unittest.TestCase):
     def test_downloading_and_graph_building(self):
         params = dict(data=QUERY_TEMPLATE.format(*BBOX))
         response = requests.get(url=DEFAULT_URL, params=params).json()
-        downloader = Downloader(response)
+        downloader = GraphDownloader(response)
 
         self.assertEqual(443, len(downloader.nodes.index))
         self.assertEqual(489, len(downloader.edges.index))
