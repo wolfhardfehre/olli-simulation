@@ -31,7 +31,20 @@ class Shuttle(Entity):
     def pick_next(self):
         NotImplementedError()
 
-    def current_state(self):
+    def to_geojson(self):
+        position, properties = self.__current_state()
+        return {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    position.x, position.y
+                ]
+            },
+            "type": "Feature",
+            "properties": properties
+        }
+
+    def __current_state(self):
         now = datetime.utcnow()
         local_tz = timezone('Europe/Berlin')
         utc_now = utc.localize(now)

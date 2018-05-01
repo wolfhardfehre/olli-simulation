@@ -70,7 +70,7 @@ class RoundTripShuttle(Shuttle):
 
 if __name__ == "__main__":
     shuttle = RoundTripShuttle(Graph.load_default(), 0, VelocityModel(), BatteryModel())
-    print(shuttle.current_state())
+    print(shuttle.to_geojson())
     for t in range(0, 1000):
         shuttle.move(1)
-        print(shuttle.current_state())
+        print(shuttle.to_geojson())

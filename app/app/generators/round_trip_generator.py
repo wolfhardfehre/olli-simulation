@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")))
 from app.app.routing.graph import Graph
 from app.app.entities.models.velocity_model import VelocityModel
 from app.app.entities.models.battery_model import BatteryModel
@@ -26,17 +26,7 @@ class RoundTripGenerator:
     def next(self):
         self.time += 1
         self.shuttle.move(self.time)
-        position, properties = self.shuttle.current_state()
-        return {
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    position.x, position.y
-                ]
-            },
-            "type": "Feature",
-            "properties": properties
-        }
+        return self.shuttle.to_geojson()
 
     def current_ground_data(self):
         return {
