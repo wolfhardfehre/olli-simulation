@@ -1,7 +1,11 @@
 import pandas as pd
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
+from app.app.entities.entity import Entity
 
 
-class ChargeStation:
+class ChargeStation(Entity):
 
     def __init__(self, row):
         self.id = row['id']
@@ -20,7 +24,7 @@ class ChargeStation:
             },
             "type": "Feature",
             "style": {
-                "color": "#E63920",
+                "color": "#fccf40",
                 "fillOpacity": 0.5,
                 "weight": 2,
                 "radius": 20,

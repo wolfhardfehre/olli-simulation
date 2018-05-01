@@ -39,6 +39,14 @@ mobile application. The underlying vehicle data can be found [here][2]. To build
 
 * Via [Slack][5]
 
+## Special Thanks To
+
+* [VBB-Rest](https://github.com/derhuerst/vbb-rest/blob/0589930aac08296877d8626193d5ea68aee03c95/docs/index.md) 
+by [derhuerst](https://github.com/derhuerst)
+for Public-Transport-API
+* [VMZ Berlin Betreibergesellschaft mbH](https://www.mcloud.de/web/guest/suche/-/results/detail/berlinelektro-ladestationeninberlin?_mysearchportlet_backURL=https%3A%2F%2Fwww.mcloud.de%2Fweb%2Fguest%2Fsuche%2F-%2Fresults%2FsearchAction%3F_mysearchportlet_currentAggs%3Dextras.subgroups%253A%2522data-run%2522%26_mysearchportlet_page%3D1)
+for Charging-Stations-API
+
 ## License
 
     Copyright 2018 Where's my Olli Team

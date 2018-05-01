@@ -5,6 +5,7 @@ from app.app.routing.graph import Graph
 from app.app.entities.models.velocity_model import VelocityModel
 from app.app.entities.models.battery_model import BatteryModel
 from app.app.entities.round_trip_shuttle import RoundTripShuttle
+from app.app.entities.background import Background
 
 
 class RoundTripGenerator:
@@ -18,10 +19,11 @@ class RoundTripGenerator:
 
     def __init__(self):
         self.time = 0.0
-        self.shuttle = RoundTripShuttle(Graph.load_default(),
-                                        self.time,
-                                        VelocityModel(),
-                                        BatteryModel())
+        graph = Graph.load_default()
+        self.background = Background(graph)
+        self.shuttle = RoundTripShuttle(
+            graph, self.time, VelocityModel(), BatteryModel(), self.background)
+        self.shuttle.first_move()
 
     def next(self):
         self.time += 1
@@ -31,5 +33,5 @@ class RoundTripGenerator:
     def current_ground_data(self):
         return {
             "type": "FeatureCollection",
-            "features": self.shuttle.get_ground_data()
+            "features": self.background.to_geojson() + [self.shuttle.get_route()]
         }
