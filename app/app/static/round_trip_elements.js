@@ -25,7 +25,7 @@ var ground_data = L.realtime({
     crossOrigin: true,
     type: 'json'
 }, {
-    interval: 100,
+    interval: 1000,
     style: setStyle,
     pointToLayer: function (feature, latlng) {
         return L.circle(latlng, feature.style.radius ? feature.style.radius : 500, setStyle);

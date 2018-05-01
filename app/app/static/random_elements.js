@@ -1,10 +1,5 @@
-function setStyle(feature) {
-    info.update(feature.properties);
-    return feature.properties && feature.style;
-}
-
 var realtime = L.realtime({
-    url: 'http://127.0.0.1:5000/animation_feed',
+    url: 'http://127.0.0.1:5000/random_feed',
     crossOrigin: true,
     type: 'json'
 }, {

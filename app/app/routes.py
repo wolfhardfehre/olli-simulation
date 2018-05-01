@@ -7,8 +7,9 @@ from app.app.app import app
 from app.app.models import VehicleStates
 from app.app.models import geo_jsonify
 from app.app.secret import TOKEN
-from app.app.state_generator import StateGenerator
-from app.app.round_trip_generator import RoundTripGenerator
+from app.app.generators.animate_generator import AnimateGenerator
+from app.app.generators.random_generator import RandomGenerator
+from app.app.generators.round_trip_generator import RoundTripGenerator
 
 
 @app.route('/')
@@ -28,7 +29,7 @@ def static_shuttle_between():
 
 
 @app.route('/animate')
-def animate_shuttle_between():
+def animate_shuttle():
     """
     Route endpoint to show animated real shuttle data within a certain time range.
 
@@ -36,11 +37,11 @@ def animate_shuttle_between():
         rendered website displaying moving point.
 
     """
-    return render_template('animated_index.html', token=TOKEN)
+    return render_template('animate_index.html', token=TOKEN)
 
 
-@app.route('/animation_feed')
-def animation_feed():
+@app.route('/animate_feed')
+def animate_feed():
     """
     Get GeoJson for an animation.
 
@@ -48,8 +49,33 @@ def animation_feed():
         a GeoJson.
 
     """
-    state_generator = StateGenerator.get_instance()
-    return jsonify(state_generator.next())
+    generator = AnimateGenerator.get_instance()
+    return jsonify(generator.next())
+
+
+@app.route('/random')
+def random_shuttle():
+    """
+    Route endpoint to show animated real shuttle data within a certain time range.
+
+    Returns:
+        rendered website displaying moving point.
+
+    """
+    return render_template('random_index.html', token=TOKEN)
+
+
+@app.route('/random_feed')
+def random_feed():
+    """
+    Get GeoJson for an animation.
+
+    Returns:
+        a GeoJson.
+
+    """
+    generator = RandomGenerator.get_instance()
+    return jsonify(generator.next())
 
 
 @app.route('/round_trip')
@@ -59,15 +85,14 @@ def round_trip():
 
 @app.route('/round_trip_feed')
 def round_trip_feed():
-    state_generator = RoundTripGenerator.get_instance()
-    return jsonify(state_generator.next())
+    generator = RoundTripGenerator.get_instance()
+    return jsonify(generator.next())
 
 
 @app.route('/round_trip_ground_feed')
 def round_trip_ground_feed():
-    state_generator = RoundTripGenerator.get_instance()
-    ground_data = state_generator.current_ground_data()
-    return jsonify(ground_data)
+    generator = RoundTripGenerator.get_instance()
+    return jsonify(generator.current_ground_data())
 
 
 def render_to_static(start_time, end_time):
