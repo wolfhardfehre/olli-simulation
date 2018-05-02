@@ -43,4 +43,4 @@ class Background(Entity):
 
 if __name__ == '__main__':
     background = Background(Graph.load_default())
-    background.closest_station_ids()
+    print(background.closest_station_ids)
