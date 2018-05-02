@@ -1,4 +1,5 @@
 from app.app.routing.graphhopper import Graphhopper
+from functools import reduce
 # Build a schedule
 class Schedule:
     def __init__(self, booking_list, start_position):
@@ -12,7 +13,10 @@ class Schedule:
 
     @property
     def station_ids(self):
-        return [activity.get('location_id') for activity in self.solution.get('routes')[0].get('activities')]
+        activities = [activity.get('location_id') for activity in self.solution.get('routes')[0].get('activities')]
+        # return uniq locations and map to ints
+        return reduce(lambda l, x: l if int(x) in l else l+[int(x)], activities, [])
+
 
     def arrival_for(self, station_id):
         return 0

@@ -18,7 +18,7 @@ class ScheduleTest(unittest.TestCase):
         booking2 = Booking(27785378, 2493824077, 500, 1800)
 
         schedule = Schedule([booking1, booking2], 627042770)
-        self.assertEqual(schedule.station_ids, [627042770, 27785378, 27785378, 2493824077])
+        self.assertEqual(schedule.station_ids, [627042770, 27785378, 2493824077])
 
 if __name__ == '__main__':
     unittest.main()

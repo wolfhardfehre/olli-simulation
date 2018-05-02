@@ -35,7 +35,7 @@ problem = \
               ]
             }
 
-graphhopper = Graphhopper()
+graphhopper = Graphhopper(api_key='3c8d0f02-49ce-4c79-92e2-6eb1965205dc')
 
 
 class GraphhopperTest(unittest.TestCase):
@@ -53,7 +53,7 @@ class GraphhopperTest(unittest.TestCase):
     def test_get_problem_successful(self):
         job_id = graphhopper.post_problem(problem)
         solution = graphhopper.get_solution(job_id)
-        self.assertEqual(solution['job_id'], '86d08bb7-124b-4059-8ae7-e994661211f9')
+        self.assertEqual(solution.get('distance'), 2196)
 
 if __name__ == '__main__':
     unittest.main()
