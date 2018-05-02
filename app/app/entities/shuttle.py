@@ -18,7 +18,8 @@ class Shuttle(MovingEntity):
         self.vehicle_id = "EZ10_G2-005"
         self.velocity_model = velocity_model
         self.battery_model = battery_model
-        self.degrees_per_hour = 0.0
+        self.meters_per_second = 0.0
+        self.distance_in_meters = 0.0
         self.edge = None
         self.position = None
 
@@ -50,20 +51,28 @@ class Shuttle(MovingEntity):
         german = utc_now.astimezone(local_tz)
         properties = {
             'vehicle_id': self.vehicle_id,
-            'theta': '{:.4f}'.format(self.edge.azimuth()),
-            'speed': self.degrees_per_hour * LATITUDE_APPROX,
+            'theta': '{:.4f} rad'.format(self.edge.azimuth()),
+            'speed': '{:.2f} m/s'.format(self.meters_per_second),
             'last_seen': german.strftime(DATETIME_FORMAT),
             'created_at': now.strftime(DATETIME_FORMAT),
-            'battery': self.battery_model.current_status()
+            'battery': '{:.2f} %'.format(self.battery_model.current_status()),
+            'distance': '{:.0f} m'.format(self.distance_in_meters)
         }
         return self.position, properties
 
     def move(self, current_time):
-        self.degrees_per_hour = self.velocity_model.current_velocity()
-        delta_degrees = self.degrees_per_hour * (current_time - self.time)
+        self.meters_per_second = self.velocity_model.current_velocity()
+        degrees_per_second = self.meters_per_second / LATITUDE_APPROX
+        delta_time = (current_time - self.time)
+        delta_degrees = degrees_per_second * delta_time
+        delta_meters = self.meters_per_second * delta_time
+        self.distance_in_meters += delta_meters
+        self.battery_model.update(delta_meters)
         x = self.position.x + delta_degrees * math.cos(self.edge.azimuth())
         y = self.position.y + delta_degrees * math.sin(self.edge.azimuth())
         self.position = Point((x, y))
         if not self.position.within(self.edge.bounding_box()):
             self.pick_next()
         self.time = current_time
+        if self.battery_model.low_battery():
+            print("should route to next charger")
