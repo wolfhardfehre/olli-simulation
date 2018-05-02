@@ -44,5 +44,5 @@ def dijkstra(graph, start, end=None):
 
 if __name__ == '__main__':
     g = Graph.load_default()
-    shortest = shortest_path(g, 27785378, 2493824077)
+    shortest = shortest_path(g.graph, 27785378, 2493824077)
     print(shortest)

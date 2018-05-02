@@ -1,11 +1,17 @@
 from app.app.routing.graphhopper import Graphhopper
+from app.app.routing.graph import Graph
+from app.app.routing.dijkstra import shortest_path
 from functools import reduce
+
 # Build a schedule
 class Schedule:
-    def __init__(self, booking_list, start_position, api_key):
+    METERS_PER_SECOND = 2.2
+
+    def __init__(self, booking_list, start_position, api_key, graph = Graph.load_default()):
         self.booking_list = booking_list
         self.start_position = start_position
         self.id = 0
+        self.graph = graph
         # compute new schedule
         g = Graphhopper(api_key=api_key)
         job_id = g.post_problem(self._query())
@@ -40,7 +46,17 @@ class Schedule:
                     "speed_factor": 0.7,
                 }
             ],
-            "shipments": self._shipments
+            "shipments": self._shipments,
+            "cost_matrices": [
+                {
+                    "profile": "eshuttle",
+                    "location_ids": self._stops,
+                    "data": {
+                        "distances": self._distance_matrix(),
+                        "times": self._time_matrix()
+                    }
+                }
+            ]
         }
 
     @property
@@ -50,8 +66,8 @@ class Schedule:
             "type_id": "eshuttle",
             "start_address": {
                 "location_id": str(self.start_position),
-                "lon": self._stations[self.start_position]['longitude'],
-                "lat": self._stations[self.start_position]['latitude']
+                "lon": self.graph.nodes.loc[self.start_position].geometry.x,
+                "lat": self.graph.nodes.loc[self.start_position].geometry.y,
             },
             "return_to_depot": False
         }
@@ -64,8 +80,8 @@ class Schedule:
                 "pickup": {
                     "address": {
                         "location_id": str(booking.start_station),
-                        "lon": self._stations.get(booking.start_station).get('longitude'),
-                        "lat": self._stations.get(booking.start_station).get('latitude')
+                        "lon": self.graph.nodes.loc[booking.start_station].geometry.x,
+                        "lat": self.graph.nodes.loc[booking.start_station].geometry.y,
                     },
                     "duration": 60,
                     "time_windows": [
@@ -78,8 +94,8 @@ class Schedule:
                 "delivery": {
                     "address": {
                         "location_id": str(booking.end_station),
-                        "lon": self._stations.get(booking.end_station).get('longitude'),
-                        "lat": self._stations.get(booking.end_station).get('latitude')
+                        "lon": self.graph.nodes.loc[booking.end_station].geometry.x,
+                        "lat": self.graph.nodes.loc[booking.end_station].geometry.y,
                     },
                     "duration": 60,
                     "time_windows": [
@@ -92,21 +108,8 @@ class Schedule:
             } for booking in self.booking_list]
 
     @property
-    def _stations(self):
-        return {
-            627042770: {
-                "longitude": 13.3568719,
-                "latitude": 52.4815767
-            },
-            27785378: {
-                "longitude": 13.3587658,
-                "latitude": 52.4857809
-            },
-            2493824077: {
-                "longitude": 13.3498653,
-                "latitude": 52.4794034
-            }
-        }
+    def _stops(self):
+        return [627042770, 27785378, 2493824077]
 
     def flatten(self, listOfLists):
         return reduce(list.__add__, listOfLists)
@@ -114,3 +117,9 @@ class Schedule:
     def next_id(self):
         self.id += 1
         return str(self.id)
+
+    def _time_matrix(self):
+        return [[y * self.METERS_PER_SECOND for y in x] for x in self._distance_matrix()]
+
+    def _distance_matrix(self):
+        return [[shortest_path(self.graph.graph, s, t).length() for t in self._stops] for s in self._stops]
