@@ -1,11 +1,10 @@
 import requests
-from app.app.secret import GRAPHHOPPER_KEY
 import json
 import time
 
 # gateway to graphhopper route optimization api
 class Graphhopper:
-    def __init__(self, api_key=GRAPHHOPPER_KEY):
+    def __init__(self, api_key):
         self.api_key = api_key
 
     def post_problem(self, problem):

@@ -2,24 +2,32 @@ from app.app.routing.graphhopper import Graphhopper
 from functools import reduce
 # Build a schedule
 class Schedule:
-    def __init__(self, booking_list, start_position):
+    def __init__(self, booking_list, start_position, api_key):
         self.booking_list = booking_list
         self.start_position = start_position
         self.id = 0
         # compute new schedule
-        g = Graphhopper()
+        g = Graphhopper(api_key=api_key)
         job_id = g.post_problem(self._query())
         self.solution = g.get_solution(job_id)
 
     @property
     def station_ids(self):
-        activities = [activity.get('location_id') for activity in self.solution.get('routes')[0].get('activities')]
         # return uniq locations and map to ints
-        return reduce(lambda l, x: l if int(x) in l else l+[int(x)], activities, [])
+        locations = [int(activity.get('location_id')) for activity in self._activities]
+        return reduce(lambda l, x: l if x in l else l+[x], locations, [])
 
+    def arrival_at(self, station_id):
+        for activity in self._activities:
+            if activity.get('location_id') == str(station_id):
+                return activity.get('arr_time')
 
-    def arrival_for(self, station_id):
-        return 0
+    @property
+    def _activities(self):
+        return self.flatten([route.get('activities') for route in self._routes()])
+
+    def _routes(self):
+        return self.solution.get('routes')
 
     def _query(self):
         return {
@@ -99,6 +107,9 @@ class Schedule:
                 "latitude": 52.4794034
             }
         }
+
+    def flatten(self, listOfLists):
+        return reduce(list.__add__, listOfLists)
 
     def next_id(self):
         self.id += 1
