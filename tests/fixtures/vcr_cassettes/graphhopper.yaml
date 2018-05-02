@@ -1,0 +1,85 @@
+interactions:
+- request:
+    body: '{"vehicles": [{"vehicle_id": "my_vehicle", "start_address": {"location_id":
+      "627042770", "lon": 13.3568719, "lat": 52.4815767}}], "services": [{"id": "jlb",
+      "address": {"location_id": "27785378", "lon": 13.3587658, "lat": 52.4857809}}]}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['236']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: https://graphhopper.com/api/1/vrp/optimize?key=3c8d0f02-49ce-4c79-92e2-6eb1965205dc
+  response:
+    body: {string: '{"job_id":"86d08bb7-124b-4059-8ae7-e994661211f9"}'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,X-RateLimit-Credits']
+      Connection: [keep-alive]
+      Content-Length: ['49']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 01 May 2018 20:10:26 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains;]
+      X-RateLimit-Credits: ['10']
+      X-RateLimit-Limit: ['15000']
+      X-RateLimit-Remaining: ['15000']
+      X-RateLimit-Reset: ['13774']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://graphhopper.com/api/1/vrp/solution/86d08bb7-124b-4059-8ae7-e994661211f9?key=3c8d0f02-49ce-4c79-92e2-6eb1965205dc
+  response:
+    body: {string: "{\n  \"copyrights\" : [ \"GraphHopper\", \"OpenStreetMap contributors\"
+        ],\n  \"job_id\" : \"86d08bb7-124b-4059-8ae7-e994661211f9\",\n  \"status\"
+        : \"finished\",\n  \"waiting_time_in_queue\" : 0,\n  \"processing_time\" :
+        54,\n  \"solution\" : {\n    \"costs\" : 205,\n    \"distance\" : 2196,\n
+        \   \"time\" : 534,\n    \"transport_time\" : 534,\n    \"completion_time\"
+        : 534,\n    \"max_operation_time\" : 534,\n    \"waiting_time\" : 0,\n    \"service_duration\"
+        : 0,\n    \"preparation_time\" : 0,\n    \"no_vehicles\" : 1,\n    \"no_unassigned\"
+        : 0,\n    \"routes\" : [ {\n      \"vehicle_id\" : \"my_vehicle\",\n      \"distance\"
+        : 2196,\n      \"transport_time\" : 534,\n      \"completion_time\" : 534,\n
+        \     \"waiting_time\" : 0,\n      \"service_duration\" : 0,\n      \"preparation_time\"
+        : 0,\n      \"activities\" : [ {\n        \"type\" : \"start\",\n        \"location_id\"
+        : \"627042770\",\n        \"address\" : {\n          \"location_id\" : \"627042770\",\n
+        \         \"lat\" : 52.4815767,\n          \"lon\" : 13.3568719\n        },\n
+        \       \"end_time\" : 0,\n        \"end_date_time\" : null,\n        \"distance\"
+        : 0,\n        \"driving_time\" : 0,\n        \"preparation_time\" : 0,\n        \"waiting_time\"
+        : 0,\n        \"load_after\" : [ 0 ]\n      }, {\n        \"type\" : \"service\",\n
+        \       \"id\" : \"jlb\",\n        \"location_id\" : \"27785378\",\n        \"address\"
+        : {\n          \"location_id\" : \"27785378\",\n          \"lat\" : 52.4857809,\n
+        \         \"lon\" : 13.3587658\n        },\n        \"arr_time\" : 315,\n
+        \       \"arr_date_time\" : null,\n        \"end_time\" : 315,\n        \"end_date_time\"
+        : null,\n        \"waiting_time\" : 0,\n        \"distance\" : 1294,\n        \"driving_time\"
+        : 315,\n        \"preparation_time\" : 0,\n        \"load_before\" : [ 0 ],\n
+        \       \"load_after\" : [ 0 ]\n      }, {\n        \"type\" : \"end\",\n
+        \       \"location_id\" : \"627042770\",\n        \"address\" : {\n          \"location_id\"
+        : \"627042770\",\n          \"lat\" : 52.4815767,\n          \"lon\" : 13.3568719\n
+        \       },\n        \"arr_time\" : 534,\n        \"arr_date_time\" : null,\n
+        \       \"distance\" : 2196,\n        \"driving_time\" : 534,\n        \"preparation_time\"
+        : 0,\n        \"waiting_time\" : 0,\n        \"load_before\" : [ 0 ]\n      }
+        ]\n    } ],\n    \"unassigned\" : {\n      \"services\" : [ ],\n      \"shipments\"
+        : [ ],\n      \"breaks\" : [ ],\n      \"details\" : [ ]\n    }\n  }\n}"}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,X-RateLimit-Credits']
+      Connection: [keep-alive]
+      Content-Length: ['2211']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Tue, 01 May 2018 20:10:28 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains;]
+      X-RateLimit-Credits: ['0']
+      X-RateLimit-Limit: ['15000']
+      X-RateLimit-Remaining: ['15000']
+      X-RateLimit-Reset: ['13772']
+    status: {code: 200, message: OK}
+version: 1
