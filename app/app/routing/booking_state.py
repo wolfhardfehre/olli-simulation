@@ -29,6 +29,7 @@ class BookingState:
         stopped = False
         for booking in self.bookings_unloaded:
             if booking.start_station == self.vehicle_position:
+                print('LOADING')
                 self.bookings_loaded.append(booking)
                 self.bookings_unloaded.remove(booking)
                 stopped = True
@@ -40,6 +41,7 @@ class BookingState:
         stopped = False
         for booking in self.bookings_loaded:
             if booking.end_station == self.vehicle_position:
+                print('UNLOADING')
                 self.bookings_loaded.remove(booking)
                 stopped = True
         if stopped:
@@ -49,4 +51,4 @@ class BookingState:
         for booking in self.bookings_loaded:
             booking.start_station = self.vehicle_position
             booking.earliest_departure = 0
-            booking.latest_arrival = sys.maxsize
+            booking.latest_arrival = 10000000 # large number

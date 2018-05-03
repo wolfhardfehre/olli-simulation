@@ -40,15 +40,14 @@ class FreeFloatShuttle(Shuttle):
         self.edge = self.route.edges[self.edge_count]
         self.edge_count += 1
         self.position = self.edge.origin.geometry
+
         self.booking_state.update_vehicle(self.edge.origin.node_id)
-        print(self.booking_state.passenger_count())
 
     def add_booking(self, booking):
         self.booking_state.add_booking(booking)
         self.tour = self.__build_tour()
-
-    def next_route(self):
-        return self.tour.pop(0)
+        self.route = self.tour.pop(0)
+        self.edge_count = 0
 
     def get_route(self):
         return self.route.to_geojson()

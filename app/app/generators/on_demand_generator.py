@@ -41,11 +41,8 @@ class OnDemandGenerator:
         }
 
     def _bookings(self, graph):
-        bookings = []
-        # 1 random bookings
-        for i in range(1):
-            origin = graph.nodes.iloc[randint(0, len(graph.nodes))].name
-            destination = graph.nodes.iloc[randint(0, len(graph.nodes))].name
-            bookings.append(Booking(origin, destination, 0, 3600))
+        origin = graph.nodes.iloc[5].name
+        destination = graph.nodes.iloc[100].name
+        bookings = [Booking(origin, destination, 0, 3600)]
         return bookings
 
