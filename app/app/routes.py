@@ -9,6 +9,7 @@ from app.app.secret import TOKEN
 from app.app.generators.animate_generator import AnimateGenerator
 from app.app.generators.random_generator import RandomGenerator
 from app.app.generators.round_trip_generator import RoundTripGenerator
+from app.app.generators.on_demand_generator import OnDemandGenerator
 
 
 @app.route('/')
@@ -81,18 +82,30 @@ def random_feed():
 def round_trip():
     return render_template('round_trip_index.html', token=TOKEN)
 
+@app.route('/on_demand')
+def on_demand():
+    return render_template('on_demand_index.html', token=TOKEN)
+
+@app.route('/on_demand_feed')
+def on_demand_feed():
+    generator = OnDemandGenerator.get_instance()
+    return jsonify(generator.next())
+
+
+@app.route('/on_demand_ground_feed')
+def on_demand_ground_feed():
+    generator = OnDemandGenerator.get_instance()
+    return jsonify(generator.current_ground_data())
 
 @app.route('/round_trip_feed')
 def round_trip_feed():
     generator = RoundTripGenerator.get_instance()
     return jsonify(generator.next())
 
-
 @app.route('/round_trip_ground_feed')
 def round_trip_ground_feed():
     generator = RoundTripGenerator.get_instance()
     return jsonify(generator.current_ground_data())
-
 
 def render_to_static(start_time, end_time):
     results = VehicleStates.query.filter(VehicleStates.last_seen.between(start_time, end_time))
