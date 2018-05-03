@@ -1,6 +1,7 @@
 from flask import render_template, request, jsonify
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from app.app.app import app
 from app.app.models import VehicleStates
@@ -10,6 +11,9 @@ from app.app.generators.animate_generator import AnimateGenerator
 from app.app.generators.random_generator import RandomGenerator
 from app.app.generators.round_trip_generator import RoundTripGenerator
 from app.app.generators.on_demand_generator import OnDemandGenerator
+from app.app.routing.booking import Booking
+from app.app.routing.graph import Graph
+from shapely.geometry import Point
 
 
 @app.route('/')
@@ -96,6 +100,22 @@ def on_demand_feed():
 def on_demand_ground_feed():
     generator = OnDemandGenerator.get_instance()
     return jsonify(generator.current_ground_data())
+
+@app.route('/book_trip', methods=['POST'])
+def book_trip():
+    generator = OnDemandGenerator.get_instance()
+    g = Graph.load_default()
+    start_station = g.get_closest(Point(float(request.form['start_lon']), float(request.form['start_lat']))).index[0]
+    end_station = g.get_closest(Point(float(request.form['end_lon']), float(request.form['end_lat']))).index[0]
+
+    booking = Booking(
+        start_station,
+        end_station,
+        int(request.form['earliest_departure']),
+        int(request.form['latest_arrival'])
+    )
+    generator.add_booking(booking)
+    return 'OK'
 
 @app.route('/round_trip_feed')
 def round_trip_feed():

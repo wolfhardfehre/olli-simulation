@@ -11,7 +11,6 @@ class Schedule:
         self.start_position = start_position
         self.id = 0
         self.graph = graph
-        # compute new schedule
         g = Graphhopper(api_key=api_key)
         job_id = g.post_problem(self._query())
         self.solution = g.get_solution(job_id)
@@ -73,6 +72,7 @@ class Schedule:
 
     @property
     def _shipments(self):
+        print(self.booking_list)
         return [
             {
                 "id": self.next_id(),
