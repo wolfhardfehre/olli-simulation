@@ -1,5 +1,4 @@
 from app.app.routing.graphhopper import Graphhopper
-from app.app.routing.graph import Graph
 from app.app.routing.dijkstra import shortest_path
 from functools import reduce
 
@@ -7,7 +6,7 @@ from functools import reduce
 class Schedule:
     METERS_PER_SECOND = 2.2
 
-    def __init__(self, booking_list, start_position, api_key, graph = Graph.load_default()):
+    def __init__(self, booking_list, start_position, api_key, graph):
         self.booking_list = booking_list
         self.start_position = start_position
         self.id = 0
