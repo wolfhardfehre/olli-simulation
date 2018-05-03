@@ -11,31 +11,36 @@ interactions:
       {"address": {"location_id": "27785378", "lon": 13.3587658, "lat": 52.4857809},
       "duration": 60, "time_windows": [{"earliest": 500, "latest": 1100}]}, "delivery":
       {"address": {"location_id": "2493824077", "lon": 13.3498653, "lat": 52.4794034},
-      "duration": 60, "time_windows": [{"latest": 1800}]}, "size": [1]}]}'
+      "duration": 60, "time_windows": [{"latest": 1800}]}, "size": [1]}], "cost_matrices":
+      [{"profile": "eshuttle", "location_ids": [627042770, 27785378, 2493824077],
+      "data": {"distances": [[0, 1144.8194522701058, 681.1940060380207], [1144.819452270106,
+      0, 1064.0647852230106], [681.1940060380207, 1064.0647852230106, 0]], "times":
+      [[0.0, 2518.602794994233, 1498.6268132836456], [2518.6027949942336, 0.0, 2340.9425274906234],
+      [1498.6268132836456, 2340.9425274906234, 0.0]]}}]}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['947']
+      Content-Length: ['1350']
       Content-Type: [application/json]
       User-Agent: [python-requests/2.18.4]
     method: POST
-    uri: https://graphhopper.com/api/1/vrp/optimize?key=3c8d0f02-49ce-4c79-92e2-6eb1965205dc
+    uri: https://graphhopper.com/api/1/vrp/optimize?key=da305144-feeb-4b8d-b843-193be386ff0b
   response:
-    body: {string: '{"job_id":"0a79332b-38b6-4681-8b4b-d1d80cf817c6"}'}
+    body: {string: '{"job_id":"5c901e95-e93b-43b7-b875-7e309450cab7"}'}
     headers:
       Access-Control-Allow-Origin: ['*']
       Access-Control-Expose-Headers: ['X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,X-RateLimit-Credits']
       Connection: [keep-alive]
       Content-Length: ['49']
       Content-Type: [application/json;charset=utf-8]
-      Date: ['Tue, 01 May 2018 23:25:49 GMT']
+      Date: ['Wed, 02 May 2018 22:58:29 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000; includeSubDomains;]
       X-RateLimit-Credits: ['10']
       X-RateLimit-Limit: ['15000']
-      X-RateLimit-Remaining: ['14939']
-      X-RateLimit-Reset: ['2051']
+      X-RateLimit-Remaining: ['14969']
+      X-RateLimit-Reset: ['3691']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -45,12 +50,39 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.18.4]
     method: GET
-    uri: https://graphhopper.com/api/1/vrp/solution/0a79332b-38b6-4681-8b4b-d1d80cf817c6?key=3c8d0f02-49ce-4c79-92e2-6eb1965205dc
+    uri: https://graphhopper.com/api/1/vrp/solution/5c901e95-e93b-43b7-b875-7e309450cab7?key=da305144-feeb-4b8d-b843-193be386ff0b
+  response:
+    body: {string: "{\n  \"copyrights\" : [ \"GraphHopper\" ],\n  \"job_id\" : \"5c901e95-e93b-43b7-b875-7e309450cab7\",\n
+        \ \"status\" : \"processing\",\n  \"waiting_time_in_queue\" : 0,\n  \"processing_time\"
+        : 186\n}"}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Expose-Headers: ['X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,X-RateLimit-Credits']
+      Connection: [keep-alive]
+      Content-Length: ['176']
+      Content-Type: [application/json;charset=utf-8]
+      Date: ['Wed, 02 May 2018 22:58:29 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000; includeSubDomains;]
+      X-RateLimit-Credits: ['0']
+      X-RateLimit-Limit: ['15000']
+      X-RateLimit-Remaining: ['14969']
+      X-RateLimit-Reset: ['3691']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: https://graphhopper.com/api/1/vrp/solution/5c901e95-e93b-43b7-b875-7e309450cab7?key=da305144-feeb-4b8d-b843-193be386ff0b
   response:
     body: {string: "{\n  \"copyrights\" : [ \"GraphHopper\", \"OpenStreetMap contributors\"
-        ],\n  \"job_id\" : \"0a79332b-38b6-4681-8b4b-d1d80cf817c6\",\n  \"status\"
+        ],\n  \"job_id\" : \"5c901e95-e93b-43b7-b875-7e309450cab7\",\n  \"status\"
         : \"finished\",\n  \"waiting_time_in_queue\" : 0,\n  \"processing_time\" :
-        168,\n  \"solution\" : {\n    \"costs\" : 210,\n    \"distance\" : 1639,\n
+        215,\n  \"solution\" : {\n    \"costs\" : 210,\n    \"distance\" : 1639,\n
         \   \"time\" : 1010,\n    \"transport_time\" : 1010,\n    \"completion_time\"
         : 1250,\n    \"max_operation_time\" : 1250,\n    \"waiting_time\" : 0,\n    \"service_duration\"
         : 240,\n    \"preparation_time\" : 0,\n    \"no_vehicles\" : 1,\n    \"no_unassigned\"
@@ -98,12 +130,12 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['3389']
       Content-Type: [application/json;charset=utf-8]
-      Date: ['Tue, 01 May 2018 23:25:50 GMT']
+      Date: ['Wed, 02 May 2018 22:58:30 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000; includeSubDomains;]
       X-RateLimit-Credits: ['0']
       X-RateLimit-Limit: ['15000']
-      X-RateLimit-Remaining: ['14939']
-      X-RateLimit-Reset: ['2051']
+      X-RateLimit-Remaining: ['14969']
+      X-RateLimit-Reset: ['3691']
     status: {code: 200, message: OK}
 version: 1
