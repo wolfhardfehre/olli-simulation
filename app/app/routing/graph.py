@@ -9,6 +9,8 @@ from app.app.routing.node import Node
 
 
 class Graph:
+    instance = None
+
     def __init__(self, nodes, edges):
         self.nodes = self.__prepare_nodes(nodes)
         edges = self.__prepare_edges(edges)
@@ -17,9 +19,11 @@ class Graph:
 
     @classmethod
     def load_default(cls):
-        nodes = pd.read_pickle("./resources/nodes.p")
-        edges = pd.read_pickle("./resources/edges.p")
-        return Graph(nodes, edges)
+        if cls.instance is None:
+            nodes = pd.read_pickle("./resources/nodes.p")
+            edges = pd.read_pickle("./resources/edges.p")
+            cls.instance = Graph(nodes, edges)
+        return cls.instance
 
     def get_closest(self, search_point):
         nearest = self.nodes['geometry'] == nearest_points(search_point, self.nodes.unary_union)[1]

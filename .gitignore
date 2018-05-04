@@ -8,3 +8,4 @@ app/tools/__pycache__/
 *.p
 *.pyc
 /tests/fixtures/vcr_cassettes/overpass.yaml
+resources/*
