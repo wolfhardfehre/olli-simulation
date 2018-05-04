@@ -1,31 +1,70 @@
-from app.app.routing.dijkstra import shortest_path
+from app.app.entities.routes import Routes
+from app.app.entities.transport_stations import TransportStations
+from app.app.entities.charge_stations import ChargeStations
 
 
 class Tour:
 
-    def __init__(self, graph, background):
+    def __init__(self, graph, velocity, battery):
         self.graph = graph
-        self.route_count = 0
-        self.edge_count = 0
-        self.storyline = self.__build(background)
-        self.route = self.storyline[self.route_count]
+        self.battery = battery
+        self.transport_stations = TransportStations(self, graph)
+        self.charge_stations = ChargeStations(self, graph, velocity, battery)
+        self.routes = Routes(self, graph, self.transport_stations.stations, velocity)
+        self.route = self.routes.get_next()
+        self.story = self.route
+        self.__has_low_battery = False
+
+        self.total_distance = 0
+        self.speed = 0
+        self.position = None
+        self.azimuth = 0
+        self.door_status = 'closed'
+        self.is_low_battery_route = False
+
+    @property
+    def battery_status(self):
+        return self.battery.status
+
+    def change_speed(self, speed):
+        self.speed = speed
+
+    def change_doors(self, doors):
+        self.door_status = doors
+
+    def change_position(self, position):
+        self.position = position
+
+    def change_meters(self, meters):
+        self.total_distance += meters
+        self.battery.update(meters)
+
+    def change_azimuth(self, azimuth):
+        self.azimuth = azimuth
+
+    def update(self, time):
+        self.story.update(time)
+        if self.story.has_ended():
+            self.next_story()
 
     def next_story(self):
-        self.route = self.storyline[self.route_count]
-        edge = self.route.edges[self.edge_count]
-        position = edge.origin.geometry
-        self.edge_count += 1
-        if self.edge_count >= len(self.route.edges):
-            self.route_count += 1
-            self.edge_count = 0
-            if self.route_count >= len(self.storyline):
-                self.route_count = 0
-        return position, edge
+        if self.story.get_type() == 'Route':
+            if self.is_low_battery_route:
+                self.is_low_battery_route = False
+                self.story = self.charge_stations.get_target_station()
+            else:
+                self.story = self.transport_stations.get_next()
+        elif self.story.get_type() == 'TransportStation':
+            if self.battery.low_battery():
+                self.is_low_battery_route = True
+                self.story = self.charge_stations.get_route_to_closest(self.story.node_id)
+            else:
+                self.story = self.routes.get_next()
+        elif self.story.get_type() == 'ChargeStation':
+            # TODO: reverse to
+            self.story = self.routes.get_next()
 
-    def get_route(self):
-        return self.route.to_geojson()
-
-    def __build(self, background):
-        station_ids = background.closest_station_ids
-        station_ids = station_ids + [station_ids[0]]
-        return [shortest_path(self.graph, o, d) for o, d in zip(station_ids[:-1], station_ids[1:])]
+    def to_geojson(self):
+        return self.transport_stations.to_geojson() + \
+               self.charge_stations.to_geojson() + \
+               [self.story.highlight()]

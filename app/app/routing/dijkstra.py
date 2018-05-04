@@ -3,7 +3,6 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 from app.app.routing.queue import PriorityDict
 from app.app.routing.graph import Graph
-from app.app.routing.route import Route
 
 
 def shortest_path(graph, start, end):
@@ -16,7 +15,7 @@ def shortest_path(graph, start, end):
             break
         end = predecessors[end]
     path.reverse()
-    return Route(graph, path)
+    return path
 
 
 def dijkstra(graph, start, end=None):

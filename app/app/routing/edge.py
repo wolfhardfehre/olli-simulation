@@ -22,6 +22,7 @@ class Edge:
         self.__azimuth = None
         self.__bbox = None
 
+    @property
     def azimuth(self):
         if self.__azimuth is None:
             start = self.origin.geometry
@@ -29,6 +30,7 @@ class Edge:
             self.__azimuth = math.atan2(end.y - start.y, end.x - start.x)
         return self.__azimuth
 
+    @property
     def bounding_box(self):
         if self.__bbox is None:
             start = self.origin.geometry
