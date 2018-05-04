@@ -6,9 +6,9 @@ from functools import reduce
 class Schedule:
     METERS_PER_SECOND = 2.2
 
-    def __init__(self, booking_list, start_position, api_key, graph):
+    def __init__(self, booking_list, start_node, api_key, graph):
         self.booking_list = booking_list
-        self.start_position = start_position
+        self.start_node = start_node
         self.id = 0
         self.graph = graph
         g = Graphhopper(api_key=api_key)
@@ -63,9 +63,9 @@ class Schedule:
             "vehicle_id": "olli",
             "type_id": "eshuttle",
             "start_address": {
-                "location_id": str(self.start_position),
-                "lon": self.graph.nodes.loc[self.start_position].geometry.x,
-                "lat": self.graph.nodes.loc[self.start_position].geometry.y,
+                "location_id": str(self.start_node.node_id),
+                "lon": self.start_node.geometry.x,
+                "lat": self.start_node.geometry.y,
             },
             "return_to_depot": False
         }
@@ -78,9 +78,9 @@ class Schedule:
                 "id": self.next_id(),
                 "pickup": {
                     "address": {
-                        "location_id": str(booking.start_station),
-                        "lon": self.graph.nodes.loc[booking.start_station].geometry.x,
-                        "lat": self.graph.nodes.loc[booking.start_station].geometry.y,
+                        "location_id": str(booking.start_station.node_id),
+                        "lon": booking.start_station.geometry.x,
+                        "lat": booking.start_station.geometry.y,
                     },
                     "duration": 60,
                     "time_windows": [
@@ -92,9 +92,9 @@ class Schedule:
                 },
                 "delivery": {
                     "address": {
-                        "location_id": str(booking.end_station),
-                        "lon": self.graph.nodes.loc[booking.end_station].geometry.x,
-                        "lat": self.graph.nodes.loc[booking.end_station].geometry.y,
+                        "location_id": str(booking.end_station.node_id),
+                        "lon": booking.end_station.geometry.x,
+                        "lat": booking.end_station.geometry.y,
                     },
                     "duration": 60,
                     "time_windows": [

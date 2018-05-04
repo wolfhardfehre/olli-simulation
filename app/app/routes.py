@@ -105,8 +105,11 @@ def on_demand_ground_feed():
 def book_trip():
     generator = OnDemandGenerator.get_instance()
     g = Graph.load_default()
-    start_station = g.get_closest(Point(float(request.form['start_lon']), float(request.form['start_lat']))).index[0]
-    end_station = g.get_closest(Point(float(request.form['end_lon']), float(request.form['end_lat']))).index[0]
+    raw_start_position = Point(float(request.form['start_lon']), float(request.form['start_lat']))
+    raw_end_position = Point(float(request.form['end_lon']), float(request.form['end_lat']))
+
+    start_station = g.get_closest_node(raw_start_position)
+    end_station = g.get_closest_node(raw_end_position)
 
     booking = Booking(
         start_station,

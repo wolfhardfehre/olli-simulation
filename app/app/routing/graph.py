@@ -29,6 +29,9 @@ class Graph:
         nearest = self.nodes['geometry'] == nearest_points(search_point, self.nodes.unary_union)[1]
         return self.nodes[nearest]
 
+    def get_closest_node(self, search_point):
+        return self.graph[self.get_closest(search_point).index[0]]
+
     def get_coordinate(self, id):
         return self.nodes.loc[[id]]
 

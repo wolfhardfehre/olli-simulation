@@ -1,12 +1,13 @@
 import sys
 import time
+from functools import reduce
 
 # Keep track of all bookings. Get's called at each station and removes bookings that have been serviced
 class BookingState:
-    def __init__(self, vehicle_position, bookings=[]):
+    def __init__(self, vehicle_position, bookings=None):
         self.vehicle_position = vehicle_position
         self.bookings_loaded = []
-        self.bookings_unloaded = bookings
+        self.bookings_unloaded = [] if bookings is None else bookings
         self._load_if_possible()
 
     @property
@@ -47,3 +48,19 @@ class BookingState:
             booking.start_station = self.vehicle_position
             booking.earliest_departure = 0
             booking.latest_arrival = 10000000 # large number
+
+    def to_geojson(self):
+        return self.to_geojson_unloaded() + self.to_geojson_loaded()
+
+    def to_geojson_loaded(self):
+        if len(self.bookings_loaded) < 1:
+            return []
+        return self.flatten([booking.to_geojson_loaded() for booking in self.bookings_loaded])
+
+    def to_geojson_unloaded(self):
+        if len(self.bookings_unloaded) < 1:
+            return []
+        return self.flatten([booking.to_geojson_unloaded() for booking in self.bookings_unloaded])
+
+    def flatten(self, listOfLists):
+        return reduce(list.__add__, listOfLists)

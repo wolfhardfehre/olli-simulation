@@ -37,12 +37,12 @@ class OnDemandGenerator:
     def current_ground_data(self):
         return {
             "type": "FeatureCollection",
-            "features": self.background.to_geojson() + [self.shuttle.get_route()]
+            "features": self.background.to_geojson() + [self.shuttle.get_route()] + self.shuttle.booking_state.to_geojson()
         }
 
     def _bookings(self, graph):
-        origin = graph.nodes.iloc[5].name
-        destination = graph.nodes.iloc[100].name
+        origin = graph.graph[graph.nodes.iloc[5].name]
+        destination = graph.graph[graph.nodes.iloc[100].name]
         bookings = [Booking(origin, destination, 0, 3600)]
         return bookings
 
