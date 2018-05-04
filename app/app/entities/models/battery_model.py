@@ -1,5 +1,5 @@
 class BatteryModel:
-    def __init__(self, start_percent=100.0, drain_per_meter=0.14):
+    def __init__(self, start_percent=100.0, drain_per_meter=0.014):
         self.drain_per_meter = drain_per_meter
         self.status = start_percent
 
