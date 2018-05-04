@@ -26,26 +26,21 @@ class BookingState:
         return len(self.bookings_loaded)
 
     def _load_if_possible(self):
-        stopped = False
+        remove_list = []
         for booking in self.bookings_unloaded:
             if booking.start_station == self.vehicle_position:
                 print('LOADING')
                 self.bookings_loaded.append(booking)
-                self.bookings_unloaded.remove(booking)
-                stopped = True
+                remove_list.append(booking)
 
-        if stopped:
-            time.sleep(1)
+        for item in remove_list:
+            self.bookings_unloaded.remove(item)
 
     def _unload_if_possible(self):
-        stopped = False
         for booking in self.bookings_loaded:
             if booking.end_station == self.vehicle_position:
                 print('UNLOADING')
                 self.bookings_loaded.remove(booking)
-                stopped = True
-        if stopped:
-            time.sleep(1)
 
     def _update_loaded(self):
         for booking in self.bookings_loaded:
