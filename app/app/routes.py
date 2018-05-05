@@ -86,9 +86,11 @@ def random_feed():
 def round_trip():
     return render_template('round_trip_index.html', token=TOKEN)
 
+
 @app.route('/on_demand')
 def on_demand():
     return render_template('on_demand_index.html', token=TOKEN)
+
 
 @app.route('/on_demand_feed')
 def on_demand_feed():
@@ -100,6 +102,7 @@ def on_demand_feed():
 def on_demand_ground_feed():
     generator = OnDemandGenerator.get_instance()
     return jsonify(generator.current_ground_data())
+
 
 @app.route('/book_trip', methods=['POST'])
 def book_trip():
@@ -120,15 +123,18 @@ def book_trip():
     generator.add_booking(booking)
     return 'OK'
 
+
 @app.route('/round_trip_feed')
 def round_trip_feed():
     generator = RoundTripGenerator.get_instance()
     return jsonify(generator.next())
 
+
 @app.route('/round_trip_ground_feed')
 def round_trip_ground_feed():
     generator = RoundTripGenerator.get_instance()
     return jsonify(generator.current_ground_data())
+
 
 def render_to_static(start_time, end_time):
     results = VehicleStates.query.filter(VehicleStates.last_seen.between(start_time, end_time))

@@ -11,9 +11,9 @@ from app.app.routing.schedule import Schedule
 from app.app.secret import GRAPHHOPPER_KEY
 from datetime import datetime
 from pytz import timezone, utc
-import time
 
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S%z'
+
 
 class FreeFloatShuttle(Shuttle):
     STOP_LIMIT = 40
@@ -71,7 +71,8 @@ class FreeFloatShuttle(Shuttle):
         self.stopping_at_station_count = 0
 
     def __build_tour(self):
-        schedule = Schedule(self.booking_state.bookings, self.booking_state.vehicle_position, GRAPHHOPPER_KEY, self.graph)
+        schedule = Schedule(self.booking_state.bookings, self.booking_state.vehicle_position, GRAPHHOPPER_KEY,
+                            self.graph)
         station_list = schedule.station_ids
         assert station_list[0] == self.booking_state.vehicle_position.node_id
         return [shortest_path(self.graph.graph, s, t) for s, t in zip(station_list, station_list[1:])]
@@ -105,6 +106,7 @@ class FreeFloatShuttle(Shuttle):
             'passenger_count': self.booking_state.passenger_count()
         }
         return self.position, properties
+
 
 if __name__ == "__main__":
     shuttle = FreeFloatShuttle(Graph.load_default(), 0, VelocityModel(), BatteryModel(), [])

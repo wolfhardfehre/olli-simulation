@@ -1,9 +1,11 @@
-import sys
-import time
 from functools import reduce
 
-# Keep track of all bookings. Get's called at each station and removes bookings that have been serviced
+
 class BookingState:
+    """
+    Keep track of all bookings. Get's called at each station and
+    removes bookings that have been serviced.
+    """
     def __init__(self, vehicle_position, bookings=None):
         self.vehicle_position = vehicle_position
         self.bookings_loaded = []
@@ -29,8 +31,7 @@ class BookingState:
     def _load_if_possible(self):
         remove_list = []
         for booking in self.bookings_unloaded:
-            if booking.start_station == self.vehicle_position:
-                print('LOADING')
+            if booking.start_node == self.vehicle_position:
                 self.bookings_loaded.append(booking)
                 remove_list.append(booking)
 
@@ -39,15 +40,14 @@ class BookingState:
 
     def _unload_if_possible(self):
         for booking in self.bookings_loaded:
-            if booking.end_station == self.vehicle_position:
-                print('UNLOADING')
+            if booking.end_node == self.vehicle_position:
                 self.bookings_loaded.remove(booking)
 
     def _update_loaded(self):
         for booking in self.bookings_loaded:
-            booking.start_station = self.vehicle_position
+            booking.start_node = self.vehicle_position
             booking.earliest_departure = 0
-            booking.latest_arrival = 10000000 # large number
+            booking.latest_arrival = 10000000  # large number
 
     def to_geojson(self):
         return self.to_geojson_unloaded() + self.to_geojson_loaded()
@@ -62,5 +62,6 @@ class BookingState:
             return []
         return self.flatten([booking.to_geojson_unloaded() for booking in self.bookings_unloaded])
 
-    def flatten(self, listOfLists):
-        return reduce(list.__add__, listOfLists)
+    @staticmethod
+    def flatten(list_of_lists):
+        return reduce(list.__add__, list_of_lists)
