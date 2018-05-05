@@ -86,9 +86,11 @@ def random_feed():
 def round_trip():
     return render_template('round_trip_index.html', token=TOKEN)
 
+
 @app.route('/on_demand')
 def on_demand():
     return render_template('on_demand_index.html', token=TOKEN)
+
 
 @app.route('/on_demand_feed')
 def on_demand_feed():
@@ -101,12 +103,16 @@ def on_demand_ground_feed():
     generator = OnDemandGenerator.get_instance()
     return jsonify(generator.current_ground_data())
 
+
 @app.route('/book_trip', methods=['POST'])
 def book_trip():
     generator = OnDemandGenerator.get_instance()
     g = Graph.load_default()
-    start_station = g.get_closest(Point(float(request.form['start_lon']), float(request.form['start_lat']))).index[0]
-    end_station = g.get_closest(Point(float(request.form['end_lon']), float(request.form['end_lat']))).index[0]
+    raw_start_position = Point(float(request.form['start_lon']), float(request.form['start_lat']))
+    raw_end_position = Point(float(request.form['end_lon']), float(request.form['end_lat']))
+
+    start_station = g.get_closest_node(raw_start_position)
+    end_station = g.get_closest_node(raw_end_position)
 
     booking = Booking(
         start_station,
@@ -117,15 +123,18 @@ def book_trip():
     generator.add_booking(booking)
     return 'OK'
 
+
 @app.route('/round_trip_feed')
 def round_trip_feed():
     generator = RoundTripGenerator.get_instance()
     return jsonify(generator.next())
 
+
 @app.route('/round_trip_ground_feed')
 def round_trip_ground_feed():
     generator = RoundTripGenerator.get_instance()
     return jsonify(generator.current_ground_data())
+
 
 def render_to_static(start_time, end_time):
     results = VehicleStates.query.filter(VehicleStates.last_seen.between(start_time, end_time))

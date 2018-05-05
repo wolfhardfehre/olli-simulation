@@ -2,13 +2,13 @@ from app.app.routing.graphhopper import Graphhopper
 from app.app.routing.dijkstra import shortest_path
 from functools import reduce
 
-# Build a schedule
+
 class Schedule:
     METERS_PER_SECOND = 2.2
 
-    def __init__(self, booking_list, start_position, api_key, graph):
+    def __init__(self, booking_list, start_node, api_key, graph):
         self.booking_list = booking_list
-        self.start_position = start_position
+        self.start_node = start_node
         self.id = 0
         self.graph = graph
         g = Graphhopper(api_key=api_key)
@@ -19,7 +19,7 @@ class Schedule:
     def station_ids(self):
         # return uniq locations and map to ints
         locations = [int(activity.get('location_id')) for activity in self._activities]
-        return reduce(lambda l, x: l if x in l else l+[x], locations, [])
+        return reduce(lambda l, x: l if x in l else l + [x], locations, [])
 
     def arrival_at(self, station_id):
         for activity in self._activities:
@@ -63,24 +63,23 @@ class Schedule:
             "vehicle_id": "olli",
             "type_id": "eshuttle",
             "start_address": {
-                "location_id": str(self.start_position),
-                "lon": self.graph.nodes.loc[self.start_position].geometry.x,
-                "lat": self.graph.nodes.loc[self.start_position].geometry.y,
+                "location_id": str(self.start_node.node_id),
+                "lon": self.start_node.geometry.x,
+                "lat": self.start_node.geometry.y,
             },
             "return_to_depot": False
         }
 
     @property
     def _shipments(self):
-        print(self.booking_list)
         return [
             {
                 "id": self.next_id(),
                 "pickup": {
                     "address": {
-                        "location_id": str(booking.start_station),
-                        "lon": self.graph.nodes.loc[booking.start_station].geometry.x,
-                        "lat": self.graph.nodes.loc[booking.start_station].geometry.y,
+                        "location_id": str(booking.start_node.node_id),
+                        "lon": booking.start_node.geometry.x,
+                        "lat": booking.start_node.geometry.y,
                     },
                     "duration": 60,
                     "time_windows": [
@@ -92,9 +91,9 @@ class Schedule:
                 },
                 "delivery": {
                     "address": {
-                        "location_id": str(booking.end_station),
-                        "lon": self.graph.nodes.loc[booking.end_station].geometry.x,
-                        "lat": self.graph.nodes.loc[booking.end_station].geometry.y,
+                        "location_id": str(booking.end_node.node_id),
+                        "lon": booking.end_node.geometry.x,
+                        "lat": booking.end_node.geometry.y,
                     },
                     "duration": 60,
                     "time_windows": [
@@ -110,8 +109,9 @@ class Schedule:
     def _stops(self):
         return [627042770, 27785378, 2493824077]
 
-    def flatten(self, listOfLists):
-        return reduce(list.__add__, listOfLists)
+    @staticmethod
+    def flatten(list_of_lists):
+        return reduce(list.__add__, list_of_lists)
 
     def next_id(self):
         self.id += 1

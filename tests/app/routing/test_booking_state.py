@@ -1,7 +1,7 @@
 import unittest
-
 from app.app.routing.booking_state import BookingState
 from app.app.routing.booking import Booking
+
 
 class ScheduleTest(unittest.TestCase):
     def test_add_booking(self):
@@ -27,7 +27,8 @@ class ScheduleTest(unittest.TestCase):
         bookings = [Booking(1, 3, 0, 1)]
         booking_state = BookingState(1, bookings)
         booking_state.update_vehicle(2)
-        self.assertEqual(booking_state.bookings[0].start_station, 2)
+        self.assertEqual(booking_state.bookings[0].start_node, 2)
+
 
 if __name__ == '__main__':
     unittest.main()
