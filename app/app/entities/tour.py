@@ -61,7 +61,7 @@ class Tour:
             else:
                 self.story = self.routes.get_next()
         elif self.story.get_type() == 'ChargeStation':
-            # TODO: reverse to
+            # TODO: route to next staion and skip next route
             self.story = self.routes.get_next()
 
     def to_geojson(self):

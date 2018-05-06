@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 from app.app.entities.charge_station import ChargeStation
 from app.app.routing.dijkstra import shortest_path
-from app.app.routing.route import Route
+from app.app.entities.route import Route
 
 
 class ChargeStations:

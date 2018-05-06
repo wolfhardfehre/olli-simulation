@@ -15,5 +15,4 @@ class DijkstraTest(unittest.TestCase):
         g = Graph(nodes_df, edges_df)
 
         shortest = shortest_path(g.graph, '1', '3')
-        node_ids = [node.node_id for node in shortest.nodes]
-        self.assertEqual(['1', '4', '3'], node_ids)
+        self.assertEqual(['1', '4', '3'], shortest)

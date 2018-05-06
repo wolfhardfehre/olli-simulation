@@ -18,5 +18,5 @@ class EdgeTest(unittest.TestCase):
         edge = Edge(g.graph['N4'], g.graph['N1'])
 
         self.assertEqual(25, edge.distance)
-        self.assertEqual(0.0, edge.azimuth())
-        self.assertTrue(expected.difference(edge.bounding_box()).is_empty)
+        self.assertEqual(0.0, edge.azimuth)
+        self.assertTrue(expected.difference(edge.bounding_box).is_empty)

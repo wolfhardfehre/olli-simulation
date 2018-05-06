@@ -1,5 +1,5 @@
 from app.app.routing.dijkstra import shortest_path
-from app.app.routing.route import Route
+from app.app.entities.route import Route
 
 
 class Routes:
