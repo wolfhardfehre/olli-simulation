@@ -1,31 +1,88 @@
+import math
 import unittest
-from unittest.mock import patch
-import pandas as pd
+from unittest.mock import MagicMock, ANY
 from app.app.routing.dijkstra import shortest_path
-from app.app.routing.graph import Graph
 from app.app.entities.route import Route
+from tests.app.helpers import get_test_graph
 
 
 class RouteTest(unittest.TestCase):
 
-    @patch('app.app.entities.tour.Tour')
-    @patch('app.app.entities.models.velocity_model.VelocityModel')
-    def test_route_creation(self, mock_tour, mock_velocity):
-        start = '1'
-        end = '3'
-        nodes, edges = self.get_nodes_and_edges()
-        graph = Graph(nodes, edges)
-        path = shortest_path(graph.graph, start, end)
+    def setUp(self):
+        self.tour = MagicMock()
+        self.velocity = MagicMock()
+        self.velocity.current_velocity = MagicMock(return_value=3.0)
 
-        route = Route(graph.graph, path, mock_tour, mock_velocity)
+        graph = get_test_graph()
+        path = shortest_path(graph.graph, 'N1', 'N3')
 
-        assert False
+        self.route = Route(graph.graph, path, self.tour, self.velocity)
 
-    @staticmethod
-    def get_nodes_and_edges():
-        node_data = [['1', 52.3, 13.4], ['2', 52.4, 13.4], ['3', 52.4, 13.3], ['4', 52.3, 13.3]]
-        edge_data = [['1', '2', 30], ['2', '3', 20], ['3', '4', 20], ['4', '1', 25]]
-        nodes = pd.DataFrame(node_data, columns=['id', 'lat', 'lon'])
-        nodes.set_index('id', inplace=True)
-        edges = pd.DataFrame(edge_data, columns=['node1', 'node2', 'distance'])
-        return nodes, edges
+    def test_route_update_tour_speed(self):
+        self.route.update(1.0)
+
+        self.tour.change_speed.assert_called_once_with(3.0)
+
+    def test_route_update_tour_meters(self):
+        self.route.update(1.0)
+        self.route.update(100.0)
+
+        self.tour.change_meters.assert_called_with(297.0)
+
+    def test_route_update_tour_azimuth(self):
+        self.route.update(1.0)
+
+        self.tour.change_azimuth.assert_called_once_with(math.pi)
+
+    def test_route_update_tour_position(self):
+        self.route.update(1.0)
+
+        self.tour.change_position.assert_called_once_with(ANY)
+
+    def test_route_update_tour_doors(self):
+        self.route.update(1.0)
+
+        self.tour.change_doors.assert_called_once_with('closed')
+
+    def test_type_is_route(self):
+        self.assertEqual('Route', self.route.get_type())
+
+    def test_has_ended_false(self):
+        self.route.update(1.0)
+        self.route.update(100.0)
+
+        self.assertFalse(self.route.has_ended())
+
+    def test_has_ended_true(self):
+        self.route.update(1.0)
+        self.route.update(3712.0)
+        self.route.update(7423.0)
+
+        self.assertTrue(self.route.has_ended())
+
+    def test_route_length(self):
+        self.assertEqual(45, self.route.length)
+
+    def test_to_geojson_contains_type(self):
+        self.assertTrue("type" in self.route.to_geojson())
+
+    def test_to_geojson_contains_geometry(self):
+        self.assertTrue("geometry" in self.route.to_geojson())
+
+    def test_to_geojson_contains_geometry_type(self):
+        self.assertTrue("type" in self.route.to_geojson()["geometry"])
+
+    def test_to_geojson_contains_geometry_type_line_string(self):
+        self.assertTrue("LineString", self.route.to_geojson()["geometry"]["type"])
+
+    def test_to_geojson_contains_geometry_coordinates(self):
+        self.assertTrue("coordinates" in self.route.to_geojson()["geometry"])
+
+    def test_to_geojson_contains_geometry_coordinates_exist(self):
+        self.assertTrue(self.route.to_geojson()["geometry"]["coordinates"])
+
+    def test_to_geojson_contains_style(self):
+        self.assertTrue("style" in self.route.to_geojson())
+
+    def test_to_geojson_contains_properties(self):
+        self.assertTrue("properties" in self.route.to_geojson())

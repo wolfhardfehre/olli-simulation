@@ -11,7 +11,7 @@ class MapFeature:
 
     def to_geojson(self):
         if self.__normal is None:
-            return {
+            self.__normal = {
                 "type": "Feature",
                 "geometry": self._geometry(),
                 "style": self._style(),
@@ -21,7 +21,7 @@ class MapFeature:
 
     def highlight(self):
         if self.__highlighted is None:
-            return {
+            self.__highlighted = {
                 "type": "Feature",
                 "geometry": self._geometry(),
                 "style": self._highlight_style(),

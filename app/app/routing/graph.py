@@ -37,6 +37,7 @@ class Graph:
     @staticmethod
     def __prepare_edges(edges):
         copy = edges.copy(deep=True)
+        copy = copy[['node1', 'node2', 'distance']]
         copy.columns = ['node2', 'node1', 'distance']
         return pd.concat([edges, copy]).reset_index()[['node1', 'node2', 'distance']]
 

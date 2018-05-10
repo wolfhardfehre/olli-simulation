@@ -20,7 +20,7 @@ class Route(Story, MapFeature):
         self.nodes = [graph[node_id] for node_id in path]
         self.edges = self.__edges()
         self.edge_count = 0
-        self.time = 0
+        self._time = 0
         self.edge = self.edges[self.edge_count]
         self.position = self.edge.origin.geometry
         self.__length = None
@@ -32,7 +32,7 @@ class Route(Story, MapFeature):
 
         meters_per_second = self.velocity.current_velocity()
         degrees_per_second = meters_per_second / LATITUDE_APPROX
-        delta_time = (time - self.time)
+        delta_time = (time - self._time)
         delta_degrees = degrees_per_second * delta_time
 
         x = self.position.x + delta_degrees * math.cos(self.edge.azimuth)
@@ -42,7 +42,7 @@ class Route(Story, MapFeature):
         self.__update_tour(meters_per_second, delta_time)
         self.__check_next()
 
-        self.time = time
+        self._time = time
 
     @property
     def length(self):
@@ -56,13 +56,13 @@ class Route(Story, MapFeature):
     def has_ended(self):
         if self.__has_ended:
             self.__has_ended = False
-            self.time = 0
+            self._time = 0
             return True
         return False
 
     def __check_start_time(self, time):
-        if self.time == 0:
-            self.time = time
+        if self._time == 0:
+            self._time = time
 
     def __update_tour(self, meters_per_second, delta_time):
         delta_meters = meters_per_second * delta_time
