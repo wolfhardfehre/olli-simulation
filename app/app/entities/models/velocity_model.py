@@ -2,7 +2,7 @@ import random
 
 
 class VelocityModel:
-    def __init__(self, min_speed=2.78, max_speed=2.78):
+    def __init__(self, min_speed=3.0, max_speed=3.0):
         """
         Sets the minimum and the maximum for the speed model.
 

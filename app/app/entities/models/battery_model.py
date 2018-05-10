@@ -6,8 +6,5 @@ class BatteryModel:
     def update(self, meters):
         self.status -= meters * self.drain_per_meter
 
-    def current_status(self):
-        return self.status
-
     def low_battery(self):
         return self.status < 20.0
